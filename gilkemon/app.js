@@ -1144,4 +1144,13 @@ function fitTextToBox(boxEl, opts = {}) {
     boxEl.style.fontSize = `${size}px`;
   }
 }
+function fitDexQuoteLines() {
+  // 도감 카드(획득한 것) 안의 텍스트 박스들
+  const boxes = document.querySelectorAll(".dex-item.unlocked .dex-textbox");
+  boxes.forEach((box) => {
+    fitTextToBox(box, { min: 10, max: 14, step: 0.5 });
+  });
+}
+
+
 window.addEventListener("resize", () => fitDexQuoteLines());

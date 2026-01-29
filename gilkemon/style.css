@@ -140,7 +140,7 @@ body{
   position: absolute;
   left: 1%;
   transform: translateX(-50%);
-  top: 550px;          /* 여기 숫자만 조절하면 됨 */
+  bottom: 5%;          /* 여기 숫자만 조절하면 됨 */
   z-index: 30;
   width: 100%;
   text-align: center;
@@ -929,7 +929,7 @@ body{
 
 /* 카드 전체는 투명 유지 */
 .info-card{
-  background: transparent !important;
+  background:transparent !important;
   border: none !important;
   box-shadow: none !important;
 }
@@ -1122,6 +1122,7 @@ body{
 .screen{
   flex: 0 0 85%;
   min-height: 0;
+  /*--screenH: 85dvh;*/
 }
 
 .bottom{
@@ -1388,11 +1389,14 @@ body{
 #infoCard.info-card{
   position: fixed !important;   /* 핵심 */
   left: 50% !important;
-  top: 40% !important;
+  /*  top: 40% !important;*/
+  top: 56% !important;
   transform: translate(-50%, -50%) !important;
   z-index: 100000 !important;
 
-  max-height: calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+  /* 원래 이거 한줄만 오류나면 밑에 두줄 빼기 max-height: calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;*/
+  max-height: calc(var(--screenH, 85dvh) - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+  height: calc(var(--screenH, 85dvh) - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important; /* ✅ 추가 */
   overflow: auto !important;
   -webkit-overflow-scrolling: touch;
 }
