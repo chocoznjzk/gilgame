@@ -592,6 +592,7 @@ body{
 .dex-item{
   position:relative;
   width: 100%;
+  min-height: 220px !important;
   aspect-ratio: 1 / 1.5;   /* 정사각형 유지 (모바일에 제일 안정적) */
    min-height: 220px;     /* ✅ aspect-ratio가 실패해도 카드 높이 보장 */
   box-sizing: border-box;
@@ -656,8 +657,8 @@ body{
 .dex-item.unlocked .dex-info{
          height: auto;           /* 100% 쓰지 말기 */
   min-height: 0; 
-    position:absolute;
-  inset:10px;
+  position: relative !important;
+  inset: auto !important;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -832,6 +833,7 @@ body{
 .dex-item{
   position:relative !important;
   width:100% !important;
+  min-height: 220px !important;
   aspect-ratio: 1 / 1.5 !important;
   border-radius:14px !important;
   background: rgba(255,255,255,.92) !important;
@@ -878,8 +880,8 @@ body{
 
 /* 카드 내용은 위로 */
 .dex-item.unlocked .dex-info{
-  position:absolute !important;
-  inset:10px !important;
+  position: relative !important;
+   inset: auto !important;
   display:flex !important;
   flex-direction:column !important;
   align-items:center !important;
