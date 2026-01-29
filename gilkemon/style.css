@@ -1384,11 +1384,11 @@ body{
 }
 
 
-/* === 카드가 하단에 잘리는 문제: viewport 오버레이로 전환 === */
+/* === 카드가 하단에 잘리는 문제: viewport 오버레이로 전환 === */ /*카드 위치 조정*/
 #infoCard.info-card{
   position: fixed !important;   /* 핵심 */
   left: 50% !important;
-  top: 35% !important;
+  top: 40% !important;
   transform: translate(-50%, -50%) !important;
   z-index: 100000 !important;
 

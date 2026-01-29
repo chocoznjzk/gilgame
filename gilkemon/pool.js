@@ -371,17 +371,7 @@ window.GILKEMON_POOL = [
     charImg: "./assets/chars/반.png",
   },
     
-       {
-    id: "SSR-06",
-    grade: "ssr",
-    name: "김해일",
-    type: "열혈사제",
-    line: "“용서는 당사자한테 \n찾아가서 해야지.\n성당에서 구하는 게 아니야.”",
-    desc: "사건에 휘말려 국정원을 나오게 되고 조금이라도 속죄하기 위해 신부가 되었다. 외모는 은혜롭지만 승질은 드릅기 그지없다.",
-    ballImg: "./assets/balls/ssr.png",
-    cardMp4: "./assets/chars/김해일.mp4",
-    charImg: "./assets/chars/김해일.png",
-  },
+    
   {
     id: "SSR-SPECIAL-01",
     grade: "ssr",
@@ -395,6 +385,17 @@ window.GILKEMON_POOL = [
     charImg: "./assets/chars/송하영.png",
     dexGif: "./assets/events/송하영픽셀.gif",
     special: "SPECIAL_SSR",
+  },
+     {
+    id: "SSR-06",
+    grade: "ssr",
+    name: "김해일",
+    type: "열혈사제",
+    line: "“용서는 당사자한테 \n찾아가서 해야지.\n성당에서 구하는 게 아니야.”",
+    desc: "사건에 휘말려 국정원을 나오게 되고 조금이라도 속죄하기 위해 신부가 되었다. 외모는 은혜롭지만 승질은 드릅기 그지없다.",
+    ballImg: "./assets/balls/ssr.png",
+    cardMp4: "./assets/chars/김해일.mp4",
+    charImg: "./assets/chars/김해일.png",
   },
         {
     id: "SSR-07",
@@ -419,26 +420,22 @@ window.GILKEMON_POOL = [
     charImg: "./assets/chars/흑해일.png",
   },
   
-     {
-    id: "SPECIAL-08",
-    grade: "special",
-    name: "탐탐이",
-    type: "고양이",
-    line: "“어흥.!!”",
-    desc: "",
-    ballImg: "./assets/balls/special.png",
-    charImg: "./assets/chars/탐탐.png",
+    {
+    id: "BLACK-01",
+    grade: "?",
+    name: "민태주",
+    type: "살인자의 기억법",
+    line: "“……안녕하세요?”",
+    desc: "강화경찰서 정보과\n 소속 순경.",
+    ballImg: "./assets/balls/black.png",
+    cardMp4: "./assets/chars/민태주.mp4",
+    charImg: "./assets/chars/민태주.png",
+    special: "BLACK",
+    eventMp4: "./assets/events/민태주.mp4",
   },
-     {
-    id: "SPECIAL-06",
-    grade: "special",
-    name: "무잔",
-    type: "균형형",
-    line: "“아직도 가끔 생각나.”",
-    desc: "미각은 정확하다.\n감정은 정리하지 않았다",
-    ballImg: "./assets/balls/special.png",
-    charImg: "./assets/chars/무잔.png",
-  },
+  
+ 
+
   {
   id: "SPECIAL-01",
   grade: "special",
@@ -492,6 +489,16 @@ window.GILKEMON_POOL = [
     ballImg: "./assets/balls/special.png",
     charImg: "./assets/chars/문백.png",
   },
+       {
+    id: "SPECIAL-06",
+    grade: "special",
+    name: "무잔",
+    type: "한잔의 노래 - 조째즈",
+    line: "“아직도 가끔 생각나.”",
+    desc: "미각은 정확하다.\n감정은 정리하지 않았다",
+    ballImg: "./assets/balls/special.png",
+    charImg: "./assets/chars/무잔.png",
+  },
         {
     id: "SPECIAL-07",
     grade: "special",
@@ -502,18 +509,16 @@ window.GILKEMON_POOL = [
     ballImg: "./assets/balls/special.png",
     charImg: "./assets/chars/김캔디.png",
   },
-
-  {
-    id: "BLACK-01",
-    grade: "?",
-    name: "민태주",
-    type: "살인자의 기억법",
-    line: "“……안녕하세요?”",
-    desc: "강화경찰서 정보과\n 소속 순경.",
-    ballImg: "./assets/balls/black.png",
-    cardMp4: "./assets/chars/민태주.mp4",
-    charImg: "./assets/chars/민태주.png",
-    special: "BLACK",
-    eventMp4: "./assets/events/민태주.mp4",
+      {
+    id: "SPECIAL-08",
+    grade: "special",
+    name: "탐탐이",
+    type: "고양이",
+    line: "“어흥.!!”",
+    desc: "",
+    ballImg: "./assets/balls/special.png",
+    charImg: "./assets/chars/탐탐.png",
   },
+
+
 ];
