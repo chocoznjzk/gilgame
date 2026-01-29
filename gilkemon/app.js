@@ -788,7 +788,7 @@ function setIdle(changeBg = false) {
   state.current = null;
   state.isLocked = false;
 
-  headlineEl.innerHTML = "앗, (&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;) 가 나타났다 !!!";
+  headlineEl.innerHTML = "앗, &nbsp;&nbsp;???&nbsp;&nbsp;&nbsp; 가 나타났다 !!!";
   hintEl.textContent = "볼을 눌러보세요";
 
   ballImg.src = "./assets/balls/empty.png";
