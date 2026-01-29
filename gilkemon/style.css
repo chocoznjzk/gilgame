@@ -207,7 +207,7 @@ body{
 .char-img{
   width: 95%;
   height: auto;
-  max-height : 250px;
+  max-height : 200px;
   border-radius:  0 !important; 
   background: transparent !important;
   box-shadow: none !important;
@@ -423,6 +423,7 @@ body{
 .screen.is-dim .headline,
 .screen.is-dim .ball-btn,
 .screen.is-dim .hint{
+  overflow: visible;
   opacity: .25;
   filter: blur(0.6px);
   transform: translateZ(0);
