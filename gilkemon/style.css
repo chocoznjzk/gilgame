@@ -498,6 +498,8 @@ body{
   gap:10px;
   overflow:auto;
   max-height: calc((var(--vh, 1vh) * 86) - 58px);
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
   padding-bottom:6px;
 }
 
@@ -517,7 +519,6 @@ body{
 
 .dex-item .dex-info{
   position:relative;     /* ✅ iOS에서 겹침 방지 핵심 */
-  inset:auto;
   width:100%;
   height:100%;
   display:flex;
