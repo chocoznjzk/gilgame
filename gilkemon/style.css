@@ -52,7 +52,7 @@ body{
   background-color: transparent;
   /*background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));*/
   border : none !important;
-  border-radius:22px;
+  border-radius:0;
   box-shadow: none !important;
 
   padding: 0;
@@ -406,7 +406,7 @@ body{
 .info-card{
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 45%;
   transform: translate(-50%, -50%);
   max-height: calc(100% - 24px);   /* vh 말고 screen(부모) 기준 */
   width: min(420px, 92vw);
@@ -414,9 +414,9 @@ body{
 }
 
 /* 화면 위/아래 여백이 부족한 기기 대응 */
-@media (max-height: 600px){
+@media (max-height: 550px){
   .info-card{ top: 50%; }
-  .char-img{ width: min(260px, 68vw); }
+  .char-img{ width: min(200px, 68vw); }
   .char-img{ max-height: 200px;}
 }
 
@@ -1384,3 +1384,22 @@ body{
 }
 
 
+/* === 카드가 하단에 잘리는 문제: viewport 오버레이로 전환 === */
+#infoCard.info-card{
+  position: fixed !important;   /* 핵심 */
+  left: 50% !important;
+  top: 38% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 100000 !important;
+
+  max-height: calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+  overflow: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* dim 배경도 화면 전체 기준으로 */
+.screen.is-dim::before{
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 99999 !important;
+}
