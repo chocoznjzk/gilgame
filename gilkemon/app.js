@@ -4,7 +4,7 @@ console.log("GILKEMON_POOL loaded?", window.GILKEMON_POOL?.length);
 console.log("APP VERSION 2026-01-28 A");
 
 function setVh() {
-  const vh = window.innerHeight * 0.01;
+  const vh = window.innerHeight * 0.01; 
   document.documentElement.style.setProperty("--vh", `${vh}px`);
 }
 
