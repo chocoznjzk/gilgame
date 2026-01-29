@@ -1366,13 +1366,13 @@ body{
 }
 /* === iOS Safari: DEX 카드 겹침 방지 (최종 덮어쓰기) === */
 #dexGrid{
-  grid-auto-rows: 240px !important; /* 카드 한 장 높이 확정 */
+  grid-auto-rows: 600px !important; /* 카드 한 장 높이 확정 */
   align-content: start !important;
 }
 
 .dex-item{
   aspect-ratio: auto !important; /* iOS grid + aspect-ratio 버그 회피 */
-  height: 240px !important;      /* row 높이와 동일하게 */
+  height: 600px !important;      /* row 높이와 동일하게 */
 }
 
 /* 혹시 텍스트가 밖으로 튀어나오며 "겹쳐 보이는" 경우까지 차단 */
