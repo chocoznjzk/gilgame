@@ -207,7 +207,7 @@ body{
 .char-img{
   width: 95%;
   height: auto;
-  max-height : 200px;
+  max-height : 220px;
   border-radius:  0 !important; 
   background: transparent !important;
   box-shadow: none !important;
@@ -414,16 +414,17 @@ body{
 }
 
 /* 화면 위/아래 여백이 부족한 기기 대응 */
-@media (max-height: 740px){
+@media (max-height: 600px){
   .info-card{ top: 50%; }
   .char-img{ width: min(260px, 68vw); }
+  .char-img{ max-height: 200px;}
 }
 
 /* info-card가 뜰 때 뒤 요소 흐리게 */
 .screen.is-dim .headline,
 .screen.is-dim .ball-btn,
 .screen.is-dim .hint{
-  overflow: visible;
+  overflow: auto;
   opacity: .25;
   filter: blur(0.6px);
   transform: translateZ(0);
