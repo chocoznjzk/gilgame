@@ -942,7 +942,7 @@ body{
   background: var(--tb-bg);                 /* ✅ 뒤 배경색(프레임) */
   border-radius: 18px;
   padding: 16px 16px 18px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 /* ✅ 텍스트 박스 이미지 (card-body 크기에 딱 맞게) */
@@ -970,7 +970,7 @@ body{
   background: var(--tb-bg);
   border-radius: 18px;
   padding: 16px 16px 18px;
-  overflow: hidden;
+  overflow:visible;
 }
 
 /* ✅ 통일 텍스트 박스 이미지 1개 */
