@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>gilkemon</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+
+  <main class="app" id="app">
+    <!-- 상단: 메인 화면 -->
+    <section class="screen" id="screen">
+      <div class="headline" id="headline">
+        앗! 야생의 (&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)가 나타났다!</div>
+      <div class="ball-wrap" id="ballWrap">
+      <button class="ball-btn" id="ballBtn" aria-label="볼">
+        <img id="ballImg" src="./assets/balls/empty.png" alt="empty ball" />
+      </button>
+      </div>
+      <div class="hint" id="hint">볼을 눌러보세요</div>
+      <div class="type-fx" id="typeFx" aria-hidden="true"></div>
+
+      <!-- 캐릭터 정보 카드 -->
+      <div class="info-card hidden" id="infoCard" aria-hidden="true">
+        <div class="new-badge hidden" id="newBadge">NEW!</div>
+        <img class="char-img" id="charImg" alt="" />
+        <div class="card-body" id="cardBody">
+        <div class="meta">
+          <span class="grade" id="charGrade"></span>
+          <span class="type" id="charType"></span>
+        </div>
+        <div class="name" id="charName"></div>
+        <div class="desc" id="charDesc"></div>
+        <div class="line" id="charLine"></div>
+        <div class="choice-row hidden" id="choiceRow">
+         <button class="choice-btn yes" id="choiceYes" type="button">그래</button>
+        <button class="choice-btn no" id="choiceNo" type="button">아니</button>
+        </div>
+
+      </div>
+      </div>
+
+      <!-- 특수 이벤트 이미지(블랙/특수SSR) -->
+      <div class="event-overlay hidden" id="eventOverlay" aria-hidden="true">
+        <img class="event-img" id="eventImg" alt="event" />
+      </div>
+
+      <!-- 짧은 문구(블랙 메시지/떠났습니다 등) -->
+      <div class="toast hidden" id="toast" aria-hidden="true"></div>
+    </section>
+
+    <!-- 하단 20%: 도감 버튼 + 히스토리(스크롤) -->
+    <section class="bottom" id="bottom">
+      <!-- 도감 버튼 (히스토리 위에 배치) -->
+      <button id="dexBtn" class="dex-btn" type="button">전체 도감</button>
+
+      <!-- 하단: 히스토리 -->
+      <section class="history">
+        <div class="history-title">히스토리</div>
+        <div class="history-list" id="historyList"></div>
+      </section>
+    </section>
+
+    <!-- 도감 오버레이 -->
+    <section id="dexOverlay" class="dex-overlay hidden" aria-hidden="true">
+      <div class="dex-panel">
+        <div class="dex-header">
+          <div class="dex-title">전체 도감</div>
+          <button id="dexClose" class="dex-close" type="button">닫기</button>
+        </div>
+        
+        <!-- 39개 볼 그리드 -->
+        <div id="dexGrid" class="dex-grid"></div>
+        
+
+        <!-- 도감 내 상세(캐릭터 정보) -->
+        <div id="dexDetail" class="dex-detail hidden" aria-hidden="true">
+          <div class="dex-detail-card">
+            <img id="dexCharImg" class="dex-char-img" alt="" />
+            <div class="dex-text">
+              <div class="dex-grade" id="dexCharGrade"></div>
+              <div class="dex-name" id="dexCharName"></div>
+              <div class="dex-type" id="dexCharType"></div>
+              <div class="dex-line" id="dexCharLine"></div>
+              <div class="dex-desc" id="dexCharDesc"></div>
+            </div>
+            <div class="dex-tap">화면을 터치하면 닫혀요</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+    
+  </main>
+
+  <script src="./pool.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

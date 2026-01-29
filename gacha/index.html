@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>행운의 가챠</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+      <!-- ✅ Start Screen -->
+  <section id="startScreen" class="start">
+    <div class="start-inner">
+      <img class="start-img" src="assets/ui/start.png" alt="start" />
+      <p class="start-text">앗, 야생의 (        )가 등장했다!</p>
+      <button id="startBtn" class="btn primary" type="button">잡는다</button>
+    </div>
+  </section>
+
+ <div id="gameApp" class="app hidden">
+  <div class="app">
+    <header class="top">
+      <h1 class="title">앗, 야생의 (        )가 나타났다! </h1>
+
+      <div class="rates">
+        <span class="badge">SSR</span>
+        <span class="badge">SR</span>
+        <span class="badge">R</span>
+        <span class="badge">N</span>
+        <span class="badge q">?</span>
+      </div>
+
+      <p class="hint">버튼을 누를 때 마다 3개의 볼을 얻을 수 있어요! 볼을 눌러 오픈하세요.</p>
+    </header>
+
+    <section class="stage" id="stage">
+      <div class="capsule" id="slot-1" tabindex="0" role="button" aria-label="캡슐 1">
+        <img class="cap-img" data-cap-img alt="capsule" />
+        <div class="cap-content hidden" data-content>
+          <img class="char-img" data-char-img alt="" />
+          <span class="cap-grade" data-grade>—</span>
+          <div class="cap-name" data-name>대기중</div>
+          <div class="type" data-type></div>
+          <div class="cap-line" data-line>캡슐을 눌러 오픈</div>
+          <div class="desc" data-desc></div>
+        </div>
+      </div>
+
+      <div class="capsule" id="slot-2" tabindex="0" role="button" aria-label="캡슐 2">
+        <img class="cap-img" data-cap-img alt="capsule" />
+        <div class="cap-content hidden" data-content>
+          <img class="char-img" data-char-img alt="" />
+          <span class="cap-grade" data-grade>—</span>
+          <div class="cap-name" data-name>대기중</div>
+          <div class="type" data-type></div>
+          <div class="cap-line" data-line>캡슐을 눌러 오픈</div>
+          <div class="desc" data-desc></div>
+        </div>
+      </div>
+
+      <div class="capsule" id="slot-3" tabindex="0" role="button" aria-label="캡슐 3">
+        <img class="cap-img" data-cap-img alt="capsule" />
+        <div class="cap-content hidden" data-content>
+          <img class="char-img" data-char-img alt="" />
+          <span class="cap-grade" data-grade>—</span>
+          <div class="cap-name" data-name>대기중</div>
+          <div class="type" data-type></div>
+          <div class="cap-line" data-line>캡슐을 눌러 오픈</div>
+          <div class="desc" data-desc></div>
+        </div>
+      </div>
+      <div id="guardNotice" class="hidden">
+      <div class="guard-card">
+       <img id="guardImg" src="" alt="">
+       <div class="name" id="guardName"></div>
+       <div class="msg" id="guardMsg"></div>
+      </div>
+      </div>
+
+    </section>
+
+    <!-- ✅ controls 안에 draw / restart 같이 둠 -->
+    <div class="controls">
+      <button id="drawBtn" class="btn btn-img" type="button" aria-label="뽑기">
+        <img src="assets/ui/draw.png" alt="" />
+      </button>
+
+      <!-- ✅ restartBtn 복구 (기본 숨김은 CSS에서 처리) -->
+      <button id="restartBtn" class="btn" type="button">다시시작</button>
+    </div>
+
+    <section class="history">
+      <h2>히스토리</h2>
+      <div class="history-list" id="historyList"></div>
+      
+    </section>
+  </div>
+
+  <!-- BLACK overlay -->
+  <div class="overlay hidden" id="overlay" aria-hidden="true">
+    <div class="overlay-inner">
+      <p class="overlay-text">BLACK</p>
+      <div class="overlay-media" id="overlayMedia"></div>
+    </div>
+  </div>
+
+  <!-- ✅ defer 필수 -->
+  <script defer src="pool.js"></script>
+  <script defer src="app.js"></script>
+  </div>
+</body>
+</html>

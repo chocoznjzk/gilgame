@@ -1,0 +1,474 @@
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", sans-serif; background:#fff; }
+.app { max-width: 980px; margin: 0 auto; padding: 24px 16px 48px; }
+
+.top { display: grid; gap: 10px; margin-bottom: 18px; }
+.title { margin: 0; font-size: 28px; }
+.hint { margin: 0; opacity: 0.75; }
+
+.rates { display: flex; gap: 8px; flex-wrap: wrap; }
+.badge{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:4px 10px; border-radius:999px; border:1px solid #ddd;
+  font-size:12px;
+}
+.badge.q{ border-style:dashed; }
+
+/* stage */
+.stage{
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  align-items: end;
+  margin: 18px 0 14px;
+  padding: 18px 12px 28px;
+  border-radius: 18px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.08), rgba(0,0,0,0));
+}
+
+@media (max-width: 860px){
+  .stage{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 520px){
+  .stage{ grid-template-columns: 1fr; }
+}
+
+.controls { display: flex; gap: 10px; margin: 14px 0 22px; }
+.btn{
+  padding:10px 14px; border-radius:12px; border:1px solid #ddd;
+  background:#fff; cursor:pointer;
+}
+.btn.primary{ border-color:#111; }
+.btn:disabled{ opacity:0.45; cursor:not-allowed; }
+
+/* capsule card */
+.capsule{
+  position: relative;
+  height: 320px;
+  border-radius: 18px;
+  border: 1px solid #e2e2e2;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+  overflow: hidden;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+.capsule:hover{ transform: translateY(-1px); box-shadow: 0 14px 34px rgba(0,0,0,0.09); }
+.capsule:active{ transform: translateY(0px) scale(0.995); }
+
+.cap-img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+  filter: drop-shadow(0 10px 18px rgba(0,0,0,0.10));
+  transition: opacity 220ms ease, filter 220ms ease, transform 220ms ease;
+}
+
+/* content panel */
+.cap-content{
+  position:absolute;
+  left:12px; right:12px; bottom:12px;
+  border-radius:14px;
+  background: rgba(255,255,255,0.92);
+  border: 1px solid rgba(0,0,0,0.08);
+  padding: 10px;
+  display: grid;
+  gap: 6px;
+  box-shadow: 0 10px 26px rgba(0,0,0,0.12);
+}
+.cap-content.hidden{ display:none; }
+
+.char-img{
+  width: 100%;
+  height: 110px;
+  object-fit: contain;
+  display:block;
+}
+.cap-grade{
+  width: fit-content;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid #ddd;
+  font-size: 12px;
+}
+.cap-name{ font-weight:700; font-size:14px; }
+.cap-line{ opacity:0.78; font-size:13px; line-height:1.35; }
+
+/* ✅ opened: 캡슐은 흐려지고 내용이 올라옴 */
+.capsule[data-state="opened"] .cap-img{
+  opacity: 0.22;
+  filter: blur(1px) grayscale(0.25) drop-shadow(0 10px 18px rgba(0,0,0,0.06));
+  transform: scale(1.02);
+}
+
+/* broken: broken.png 보여주기(잔해 느낌: 아래 정렬) */
+.capsule[data-state="broken"]{
+  padding: 8px;
+}
+.capsule[data-state="broken"] .cap-img{
+  height: 65%;
+  width: 82%;
+  object-position: center bottom;
+  transform: scale(0.92);
+  filter: drop-shadow(0 14px 18px rgba(0,0,0,0.15));
+  opacity: 1;
+}
+
+/* ✅ 엔딩 최종에서는 깨진 이미지를 숨김(블랙만 남는 연출) */
+.stage.hide-broken .capsule[data-state="broken"] .cap-img{
+  opacity: 0;
+  transform: scale(0.85);
+}
+
+/* history */
+.history { margin-top: 16px; }
+.history h2 { margin: 0 0 10px; font-size: 16px; }
+.history-list{
+  min-height:44px;
+  padding:10px;
+  border:1px solid #ddd;
+  border-radius:14px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+  background:#fff;
+}
+.history-empty{ opacity:0.65; font-size:13px; }
+
+.history-item{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 10px;
+  border:1px solid #ddd;
+  border-radius:12px;
+  background:#fff;
+}
+.history-item img{
+  width:26px; height:26px; object-fit:contain;
+}
+.history-item .hn{ font-size:13px; opacity:0.85; }
+
+/* overlay */
+.overlay{
+  position:fixed; inset:0;
+  background: rgba(0,0,0,0.6);
+  display:grid; place-items:center;
+  padding:20px;
+}
+.overlay.hidden{ display:none; }
+.overlay-inner{
+  width: min(520px, 92vw);
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+  padding: 18px 16px;
+}
+.overlay-text{ margin:0 0 12px; letter-spacing:1px; }
+.overlay-media{
+  height:220px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
+  overflow:hidden;
+}
+.overlay-media img, .overlay-media video{
+  width:100%; height:100%;
+  object-fit: cover;
+  display:block;
+}
+
+/* ✅ 블랙 엔딩 시: 3번(블랙)을 가운데로 */
+.stage.ending #slot-1 { order: 1; }
+.stage.ending #slot-3 { order: 2; } /* 가운데 */
+.stage.ending #slot-2 { order: 3; }
+
+/* ✅ 깨진 이미지 모션/연출 없애고: 블랙 엔딩 때 양옆 슬롯은 사라지게 */
+.stage.ending .capsule[data-state="dead"]{
+  opacity: 0;
+  transform: scale(0.98);
+  pointer-events: none;
+}
+
+/* (혹시 남아있으면) hide-broken 관련 규칙 무력화 */
+.stage.hide-broken .capsule[data-state="broken"] .cap-img{
+  opacity: 0;
+  transform: none;
+}
+
+/* ✅ 블랙 엔딩에서 특수 SSR: 이름+대사만 남기기 */
+.capsule.summary .cap-content{
+  display: grid;
+  gap: 6px;
+}
+
+.capsule.summary .cap-grade{ 
+  display: none;      /* 등급 숨김 */
+}
+
+.capsule.summary .char-img{
+  display: none;      /* 캐릭터 이미지 숨김 */
+}
+
+/* (선택) 이름/대사는 좀 더 또렷하게 */
+.capsule.summary .cap-name{
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.capsule.summary .cap-line{
+  opacity: 0.9;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* ✅ 블랙 엔딩 특수 SSR: 캡슐 이미지 완전 제거 */
+.capsule.summary .cap-img{
+  opacity: 0;
+  transform: scale(0.95);
+  filter: none;
+  pointer-events: none;
+}
+
+/* =========================
+   Special SSR: 배경 완전 삭제 + 텍스트만 중앙
+   (반드시 style.css 맨 마지막에 두기)
+   ========================= */
+
+#stage .capsule.summary-stay{
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  padding: 0 !important;
+
+  display: grid !important;
+  place-items: center !important;
+}
+
+/* 캡슐 이미지/캐릭터/등급 전부 숨김 */
+#stage .capsule.summary-stay .cap-img,
+#stage .capsule.summary-stay .char-img,
+#stage .capsule.summary-stay [data-grade]{
+  display: none !important;
+}
+
+/* 아래 흰 박스(=cap-content)도 완전 제거 + 중앙 */
+#stage .capsule.summary-stay [data-content]{
+  position: static !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+
+  display: grid !important;
+  gap: 10px !important;
+  text-align: center !important;
+}
+
+/* 이름은 희미하게 */
+#stage .capsule.summary-stay [data-name]{
+  opacity: 0.35 !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+}
+
+/* 대사는 진하게 */
+#stage .capsule.summary-stay [data-line]{
+  opacity: 1 !important;
+  font-weight: 900 !important;
+  font-size: 16px !important;
+  line-height: 1.55 !important;
+  white-space: pre-wrap !important;
+}
+
+/* 타자 커서 */
+#stage .capsule.summary-stay .tw-cursor{
+  display: inline-block;
+  width: 10px;
+  margin-left: 2px;
+  opacity: 0.9;
+  animation: twBlink 0.85s steps(1) infinite;
+}
+@keyframes twBlink{ 50%{ opacity: 0; } }
+
+/* ✅ 블랙 엔딩: (양옆) 서서히 흐려지며 사라짐 */
+.stage.ending .capsule.fade-out{
+  animation: fadeOutSoft 1.2s ease forwards;
+  pointer-events: none;
+  transform-origin: center;
+}
+
+@keyframes fadeOutSoft{
+  0%   { opacity: 1;   filter: blur(0px); transform: scale(1); }
+  70%  { opacity: 0.25;filter: blur(1px); transform: scale(0.99); }
+  100% { opacity: 0;   filter: blur(2px); transform: scale(0.985); }
+}
+
+/* ===== Image Button ===== */
+.btn-img{
+  padding: 0;
+  border-radius: 14px;
+  width: 100px;            /*  조절 */
+  height: auto;            /*  조절 */
+  display: inline-grid;
+  place-items: center;
+  overflow: visible;
+}
+.btn-img img{
+ width: 100%;
+  height: auto;         /* ✅ 이미지 비율 유지 */
+  display: block;
+  object-fit: contain;
+}
+
+/* disabled 상태에서 버튼 자체는 흐리게 */
+.btn-img:disabled{
+  opacity: 0.35;
+}
+
+/* ===== Restart button: 기본은 '안 보이게' ===== */
+#restartBtn{
+  display: none;
+}
+
+/* ===== 게임오버 상태일 때: 뽑기 숨기고 다시시작만 ===== */
+#restartBtn{ display: none; }          /* 기본 숨김 */
+body.is-gameover #drawBtn{ display: none; }
+/* ===== 게임오버 상태일 때만 다시시작 버튼 보이게 ===== */
+body.is-gameover #restartBtn{
+  display: inline-flex;
+}
+
+/* (선택) 게임오버 때는 컨트롤 영역 정렬 */
+body.is-gameover .controls{
+  justify-content: center;
+}
+
+/* ===== utils ===== */
+.hidden { display: none !important; }
+
+/* ===== Start Screen ===== */
+.start{
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.start-inner{
+  width: min(520px, 92vw);
+  display: grid;
+  gap: 14px;
+  place-items: center;
+  text-align: center;
+}
+
+.start-img{
+  width: min(520px, 92vw);
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.start-text{
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+}
+
+.cap-grade[data-grade="HIDDEN"]{
+  background:#111;
+  color:#fff;
+  border-color:#111;
+}
+
+.cap-grade[data-grade="SPECIAL"]{
+  background:#fff3cd;
+  color:#7a4a00;
+  border-color:#e6c36a;
+}
+
+/* ===== SPECIAL GUARD NOTICE ===== */
+#guardNotice {
+ position: fixed;
+  top: 14%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 999999;
+  pointer-events: none;
+
+  /* ✅ 화면 밖으로 나가지 않게 */
+  max-width: min(320px, calc(100vw - 24px));
+  width: max-content;
+}
+
+#guardNotice.hidden {
+  display: none;
+}
+
+.guard-card {
+  background: rgba(0, 0, 0, 0.65);
+  border-radius: 16px;
+  padding: 28px 32px;
+  text-align: center;
+  color: #fff;
+
+  /* ✨ 금색 테두리 */
+  border: 2px solid #f5d77a;
+  box-shadow:
+    0 0 12px rgba(245, 215, 122, 0.7),
+    0 0 28px rgba(245, 215, 122, 0.5);
+
+  animation: guardGlow 2.2s ease-in-out infinite;
+}
+
+@keyframes guardGlow {
+  0% {
+    box-shadow:
+      0 0 10px rgba(245, 215, 122, 0.6),
+      0 0 22px rgba(245, 215, 122, 0.4);
+  }
+  50% {
+    box-shadow:
+      0 0 18px rgba(245, 215, 122, 0.9),
+      0 0 36px rgba(245, 215, 122, 0.7);
+  }
+  100% {
+    box-shadow:
+      0 0 10px rgba(245, 215, 122, 0.6),
+      0 0 22px rgba(245, 215, 122, 0.4);
+  }
+}
+
+.guard-card img {
+  width: 120px;
+  height: auto;
+  margin-bottom: 12px;
+}
+
+.guard-card .name {
+  font-size: 18px;
+  font-weight: 600;
+  opacity: 0.9;
+  margin-bottom: 6px;
+}
+
+.guard-card .msg {
+  font-size: 16px;
+  font-weight: 700;
+  color: #f5d77a;
+}

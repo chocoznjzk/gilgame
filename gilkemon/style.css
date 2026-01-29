@@ -1,0 +1,1359 @@
+html{
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  font-size: 14px;
+}
+body{
+  -webkit-text-size-adjust: 100%;
+}
+
+:root{
+  --bg:#0f1117;
+  --card:#171a22;
+  --text:#e8eaf1;
+  --muted:rgba(232,234,241,.65);
+  --muted2:rgba(232,234,241,.45);
+  --line:rgba(255,255,255,.08);
+  --shadow: 0 18px 60px rgba(0,0,0,.35);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  /*background: url("./assets/bg/main2.png") center / cover no-repeat fixed;*/
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", sans-serif;
+ 
+  
+}
+
+.hidden{display:none !important;}
+
+.app{
+   /*background: url("./assets/bg/눈.jpeg") center / contain no-repeat;*/
+    /* 배경 이미지가 잘리지 않고 전체가 보이게 */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-color:rgb(0, 0, 0);
+  /* 화면을 80/20으로 나누기 위해 뷰포트 높이를 고정 */
+  height: calc(var(--vh, 1vh) * 100);
+  min-height: calc(var(--vh, 1vh) * 100);
+  display:flex;
+  flex-direction:column;
+  padding: 16px 14px calc(18px + env(safe-area-inset-bottom));
+  gap:14px;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.screen{
+
+  background-color: transparent;
+  /*background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));*/
+  border : none !important;
+  border-radius:22px;
+  box-shadow: none !important;
+
+  padding: 0;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+
+  justify-content:center;
+
+  gap:12px;
+
+  /* 상단 스크린: 약 80% 영역 */
+  flex: 1 1 auto;
+  min-height: 0;
+  position:relative;
+  overflow:hidden;
+}
+
+/* ===== 선택형 SR(그래/아니) ===== */
+
+/* 블랙처럼 살짝 어둡게 */
+.screen.is-choice-dim::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  z-index: 5;
+}
+/* 기존 요소들보다 위로 (카드는 위에 있어야 함) */
+.info-card{ z-index: 10; }
+.event-overlay{ z-index: 30; }
+.toast{ z-index: 40; }
+
+/* 버튼 2개 줄 */
+.choice-row{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  margin-top:10px;
+}
+.choice-row.hidden{ display:none; }
+.choice-btn{
+  flex:1 1 0;
+  padding: 12px 10px;
+  border-radius: 14px;
+  border:1px solid rgba(0,0,0,.15);
+  background: rgba(255,255,255,.92);
+  font-weight: 900;
+  font-size: 18px;
+}
+
+.choice-btn:active{ transform: scale(.98); }
+#charLine{
+  white-space: pre-line;
+}
+
+
+
+/* 하단 20% 영역(도감 버튼 + 히스토리) */
+.bottom{
+  flex: 0 0 calc(var(--vh, 1vh) * 20);
+  min-height: 140px;
+  max-height: calc(var(--vh, 1vh) * 22);
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.headline{
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -.3px;
+  text-align:center;
+  margin-top: 2px;
+}
+
+.hint{
+  font-size: 13px;
+  color: var(--muted);
+  z-index: 20;  
+  margin-top: 2px;
+}
+#hint{
+  position: absolute;
+  left: 1%;
+  transform: translateX(-50%);
+  top: 450px;          /* 여기 숫자만 조절하면 됨 */
+  z-index: 30;
+  width: 100%;
+  text-align: center;
+}
+
+/* 볼 버튼 */
+.ball-btn{
+  width: 170px;
+  height: 170px;
+  border-radius: 26px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,.04);
+  display:grid;
+  place-items:center;
+  position:relative;
+  box-shadow: 0 12px 30px rgba(0,0,0,.25);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+
+
+.ball-btn img{
+  width: 128px;
+  height: 128px;
+  user-select:none;
+  pointer-events:none;
+}
+
+
+@keyframes spin{
+  from{ transform: rotate(0deg); }
+  to{ transform: rotate(360deg); }
+}
+
+/* ===== 캐릭터 정보 카드 ===== */
+.info-card{
+  width: min(320px, 100%);
+  margin-top: 6px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 20px;
+  padding: 14px 14px 16px;
+  box-shadow: 0 12px 34px rgba(0,0,0,.28);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+   text-align: center;
+}
+/* 텍스트 영역만 배경/그림자 */
+.card-body{
+  width: min(320px, 100%);
+  background: rgba(255,255,255,.90); /* JS에서 캐릭터별로 덮어씀 */
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 20px;
+  padding: 14px 14px 16px;
+  box-shadow: 0 12px 34px rgba(0,0,0,.28);
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.char-img{
+  width: 95%;
+  height: auto;
+  max-height : 250px;
+  border-radius:  0 !important; 
+  background: transparent !important;
+  box-shadow: none !important;
+  object-fit: contain !important; /* 픽셀 캐릭터면 contain이 자연스러움 */
+}
+
+.meta{
+  width: 100%;
+  display:flex;
+   flex-direction: column;   /* ✅ 한 줄 정렬 말고 위아래로 */
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  text-align:center;
+}
+
+.grade{
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .3px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.8);
+  border: 1px solid rgba(0,0,0,1);
+}
+
+.type{
+  font-size: 12px;          /* 분류: 제일 작게 */
+  color: #0f111797;   /* 살짝 흐리게 */
+  font-weight: 700;
+}
+
+.name{
+  width: 100%;
+  font-size: 20px;          /* 이름: 크고 */
+  font-weight: 900;         /* 진하게 */
+  letter-spacing: -.3px;
+  text-align:center;
+}
+
+.desc{
+  width: 100%;
+  font-size: 14px;          /* 설명: 적당한 크기 */
+  /*color: var(--muted);*/
+  line-height: 1.5;
+  text-align:center;
+  white-space: pre-line;   /* \n 줄바꿈 표시 */
+  overflow-wrap: anywhere; /* 긴 문장도 줄바꿈 */
+}
+
+.line{
+  width: 100%;
+  font-size: 18px;          /* 대사: 이름과 동일 크기 */
+  font-weight: 800;         /* 진하진 않게 */
+  color: black;
+  letter-spacing: -.3px;
+  text-align:center;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255,255,255,.08);
+  white-space: pre-line;   /* \n 줄바꿈 표시 */
+  overflow-wrap: anywhere; /* 긴 문장도 줄바꿈 */
+}
+
+/* ===== 이벤트 오버레이 ===== */
+.event-overlay{
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  background: rgba(0,0,0,.85);
+  z-index: 20;
+}
+
+.event-img{
+  width: min(420px, 86vw);
+  height: auto;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 18px 60px rgba(0,0,0,.45);
+}
+
+/* ===== 토스트 ===== */
+.toast{
+  position:absolute;
+  left:50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  z-index: 30;
+  max-width: min(420px, calc(100vw - 28px));
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(0,0,0,.75);
+  border: 1px solid rgba(255,255,255,.10);
+  color: rgba(255,255,255,.92);
+  font-size: 14px;
+  line-height: 1.45;
+  text-align:center;
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+}
+
+/* 히스토리 */
+.history{
+  background-color: azure;
+  border:1px solid var(--line);
+  width: 100%;
+  height: auto;
+  border-radius: 18px;
+  padding: 12px 12px 10px;
+  /* bottom 안에서 남는 높이를 채우고 내부 스크롤을 가능하게 */
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  text-align: center !important;
+}
+
+.history-title{
+  font-size: 13px;
+  font-weight: 800;
+  /*color: var(--muted);*/
+  margin-bottom: 10px;
+}
+
+.history-list{
+  display:flex;
+  flex-direction:row;
+  flex-wrap:wrap; 
+  gap:10px;
+  align-items:flex-start;
+  /* bottom(20%) 안에서 고정 높이 + 스크롤 */
+  height: 100%;
+  max-height: none;
+  overflow:auto;
+  padding: 0px 25px 4px;
+   justify-content: center !important;
+}
+
+.history-empty{
+  font-size: 13px;
+  color: var(--muted2);
+  padding: 6px 2px;
+}
+
+/* 히스토리 리스트 전체 */
+/* 히스토리 리스트: 칩들이 가로로 나열되다 줄바꿈 */
+#historyList{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  align-items:flex-start;
+}
+
+
+/* 각 히스토리 행 */
+.history-item{
+   display:inline-flex;
+  align-items:center;
+  gap:8px;
+
+  height:36px;              /* ✅ 칩 높이 고정 */
+  border:1px solid rgba(0,0,0,.14);
+  padding:8PX 12px;           /* ✅ 좌우 여백 */
+  border-radius:14px; /* 테두리 둥금 */
+
+  background: rgba(255,255,255,.50); /* 밝은 카드 느낌 */
+  backdrop-filter: blur(4px);
+  box-sizing:border-box;
+  font-size:10px;
+  width:auto;             /* ✅ 꽉 차는 것 방지 */
+  flex:0 0 auto;          /* ✅ 한 칩 단위로만 */
+}
+
+/* 히스토리 캐릭터 아이콘 */
+.history-item img{
+  width:50px;
+  height:50px;
+  object-fit:contain;
+  border-radius:6px;
+  flex-shrink:0;
+}
+
+.history-item .name{
+  font-size: 13px;
+  font-weight: 600;
+
+  color:#111;
+  line-height:1;
+
+  max-width:120px;          /* ✅ 너무 길면 줄임 */
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+/* ===== 캐릭터 정보 오버레이(볼 위로) ===== */
+
+/* info-card를 스크린 '하단 중앙'에 고정 */
+.info-card{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  max-height: calc(100% - 24px);   /* vh 말고 screen(부모) 기준 */
+  width: min(420px, 92vw);
+  overflow: auto;
+}
+
+/* 화면 위/아래 여백이 부족한 기기 대응 */
+@media (max-height: 740px){
+  .info-card{ top: 54%; }
+  .char-img{ width: min(260px, 68vw); }
+}
+
+/* info-card가 뜰 때 뒤 요소 흐리게 */
+.screen.is-dim .headline,
+.screen.is-dim .ball-btn,
+.screen.is-dim .hint{
+  opacity: .25;
+  filter: blur(0.6px);
+  transform: translateZ(0);
+}
+
+/* dim 상태에서도 볼 버튼 눌림 방지(원하면) */
+.screen.is-dim .ball-btn{
+  pointer-events: none;
+}
+
+/* info-card 자체는 선명하게 */
+.screen.is-dim .info-card{
+  opacity: 1;
+  filter: none;
+}
+
+/* 이벤트 이미지 오버레이는 최상위 유지 */
+.event-overlay{ z-index: 30; }
+.toast{ z-index: 40; }
+
+/*도감 버튼*/
+.dex-btn{
+  width: min(220px, 70%);
+  margin: 0 auto;           /* bottom 영역 안에서 가운데 */
+  display: block; 
+  padding:12px 12px;
+  border-radius:14px;
+  border:1px solid rgba(0,0,0,.1);
+  background:rgba(255,255,255,.9);
+  font-weight:800;
+}
+
+/* 도감 오버레이 */
+.dex-overlay.hidden{display:none;}
+.dex-overlay{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  background:rgba(0,0,0,.35);
+}
+
+/* 도감 패널 */
+.dex-panel{
+  position:absolute;
+  left:0; right:0; bottom:0;
+  max-height: calc(var(--vh, 1vh) * 86);
+  background:rgba(255,255,255,.95);
+  border-radius:18px 18px 0 0;
+  padding:14px 14px 18px;
+  overflow:hidden;
+  color: #111;
+}
+
+.dex-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+}
+.dex-title{font-weight:900; font-size:16px;}
+.dex-close{
+  border:1px solid rgba(0,0,0,.12);
+  background:#fff;
+  border-radius:12px;
+  padding:8px 10px;
+  font-weight:700;
+}
+
+/* 볼 그리드 */
+.dex-grid{
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap:10px;
+  overflow:auto;
+  max-height: calc((var(--vh, 1vh) * 86) - 58px);
+  padding-bottom:6px;
+}
+
+
+
+.dex-item img{
+  width:70%;
+  height:auto;
+  object-fit:contain;
+}
+
+/* 잠김 상태 */
+.dex-item.locked{
+  opacity:1;
+  filter:none;
+}
+
+.dex-item .dex-info{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:10px;
+  text-align:center;
+  font-size:12px;
+}
+
+
+/* 상세가 열리면 뒤(볼 목록) 흐리게 */
+.dex-panel.is-detail .dex-grid{
+  filter: blur(3px);
+  opacity:.35;
+  pointer-events:none;
+}
+
+.dex-detail.hidden{display:none;}
+.dex-detail{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:14px;
+}
+
+.dex-detail-card{
+  width:min(360px, 92vw);
+  background:rgba(255,255,255,.96);
+  border:1px solid rgba(0,0,0,.10);
+  border-radius:18px;
+  box-shadow:0 18px 40px rgba(0,0,0,.18);
+  padding:16px 16px 14px;
+  text-align:center;
+}
+
+.dex-char-img{
+  width:140px;   /* 캐릭터 이미지 크게 */
+  height:140px;
+  object-fit:contain;
+  display:block;
+  margin:0 auto 10px;
+}
+
+.dex-name{font-size:18px; font-weight:900; margin-top:4px;}
+.dex-grade{font-weight:800; opacity:.9; margin-top:2px;}
+.dex-type{font-size:12px; opacity:.55; margin-top:6px;} /* 분류 가장 작고 흐리게 */
+.dex-line{font-size:18px; font-weight:500; margin-top:20px;} /* 대사 = 이름 크기, 덜 진하게 */
+.dex-desc{font-size:3px; opacity:.9; margin-top:10px; line-height:1.45;} /* 설명 적당 */
+.dex-tap{font-size:12px; opacity:.55; margin-top:12px;}
+
+/* 작은 화면 */
+@media (max-width: 360px){
+  .dex-grid{ grid-template-columns: repeat(3, 1fr); }
+}
+
+/* 도감 그리드 */
+#dexGrid{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  align-items: stretch;
+}
+
+
+/* 도감 아이템 기본 */
+.dex-item{
+  position:relative;
+  width: 100%;
+  aspect-ratio: 1 / 1.5;   /* 정사각형 유지 (모바일에 제일 안정적) */
+  border-radius:16px;
+  overflow:hidden;
+  background:rgba(255,255,255,0.92);
+  display:flex;
+  border:1px solid rgba(0,0,0,0.8);
+  border-radius:14px;
+  padding:12px;
+  align-items:center;
+  justify-content:center;
+}
+
+/* 잠김: 볼만 중앙 + 잠금 */
+.dex-item.locked{
+  /*background: rgba(255,255,255,.92);*/
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:120px;
+}
+
+.dex-item.locked .dex-ball{
+   width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  opacity: 1;
+  filter: none;
+}
+
+.dex-item.locked .dex-lock{
+  position:absolute;
+  bottom:10px;
+  font-size:12px;
+  opacity:.7;
+}
+
+/* 해금: 흐린 볼(배경) */
+.dex-ball.bg{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;          /* 잠금 볼과 동일 크기 */
+  height: auto;
+  object-fit:contain;
+  opacity: 0.18;        /* 흐림 정도 */
+  filter: none;         /* 회색화 방지 */
+  pointer-events: none;
+}
+
+/* 해금 카드일 때 레이아웃을 '고정 높이 구조'로 */
+.dex-item.unlocked{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* 해금 정보 레이아웃 */
+.dex-item.unlocked .dex-info{
+         height: auto;           /* 100% 쓰지 말기 */
+  min-height: 0; 
+    position:absolute;
+  inset:10px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  padding:10px;
+   gap:6px;
+  text-align:center;
+   box-sizing:border-box;
+    overflow:hidden;
+        
+}
+
+/* 캐릭터 이미지는 셀 높이의 절반까지만 */
+.dex-item.unlocked .dex-char{
+   height: 44%;                 /* ✅ 카드의 “반 정도”를 이미지가 차지 */
+  width:auto;
+  max-width: 100%;
+  object-fit:contain;
+  flex:0 0 auto;
+}
+/* 텍스트 묶음 영역: 이 영역 안에 "무조건" 들어가야 함 */
+.dex-item.unlocked .dex-text{
+  flex: 1;
+  min-height: 0;           /* 중요: overflow 계산 제대로 */
+  overflow: hidden;        /* 넘치면 숨김(= JS가 줄여서 맞출거라 최종적으로 안넘침) */
+}
+
+/* 등급/분류: 제일 작게 */
+.dex-item.unlocked .dex-grade,
+.dex-item.unlocked .dex-type{
+  font-size:13px !important;
+  color: rgba(0,0,0,.55);
+  line-height:1.1;
+}
+/* 이름: 크고 진하게 */
+.dex-item.unlocked .dex-name{
+  font-size:16px;
+  font-weight:900;
+  color:#111;
+  line-height:1.1;
+}
+
+/*.dex-item.unlocked .dex-desc,
+.dex-item.unlocked .dex-line{
+  width:100%;
+  color:#111;
+  line-height:1.25;
+  overflow:hidden;
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+}*/
+
+.char-grade,
+.char-name,
+.char-type,
+.char-desc,
+.dex-line {
+  text-align: center;
+}
+/* 텍스트 영역은 나머지 */
+.dex-item.unlocked .dex-meta,
+.dex-item.unlocked .dex-desc,
+.dex-item.unlocked .dex-line{
+  flex: 0 0 auto;
+  width: 100%;
+  text-align:center;
+  overflow:hidden;
+}
+
+/* 글자 크기 조절: 등급/분류 제일 작게, 설명/대사 더 크게 */
+.dex-grade{ font-size:11px; opacity:.75; }
+.dex-type { font-size:10px; opacity:.6; }
+.dex-desc { font-size:3px; line-height:1.35; }
+.dex-line { font-size:14px; font-weight:600; }
+
+.dex-char{
+  width:100%;
+  max-width:220px;
+  align-self:center;
+  image-rendering:auto;
+}
+
+/* 메타(등급/이름/분류) */
+.dex-meta{ text-align:center; }
+.dex-grade{
+  font-size:12px;
+  opacity:.65;        /* 분류처럼 작고 흐리게 톤 */
+}
+.dex-name{
+  font-size:18px;
+  font-weight:800;    /* 이름 진하고 크게 */
+  margin-top:2px;
+}
+.dex-type{
+  font-size:12px;
+  opacity:.6;         /* 분류 가장 작고 흐리게 */
+}
+
+/* 설명/대사 위치: 너가 원한 “설명 먼저, 대사는 아래” */
+.dex-desc{
+   white-space: pre-line; 
+  font-size:3px;     /* 설명 적당 */
+  max-height: calc(1.35em * 2); /* ✅ 3줄 박스 */
+  opacity:.9;
+  line-height:1.35;
+}
+.char-desc{
+  white-space: pre-line;   /* ✅ \n 줄바꿈 적용 */
+  line-height: 1.35;
+  max-height: calc(1.35em * 2); /* ✅ 2줄 박스 */
+   word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+.dex-line{
+  font-size:18px;     /* 대사는 이름과 같은 크기 */
+  font-weight:400;    /* 근데 진하진 않게 */
+  max-height: calc(1.35em * 2);
+  opacity:.85;
+  line-height:1.25;
+}
+
+/* 볼 버튼(영역) 박스 느낌 제거 */
+#ballBtn{
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+/* 히스토리 빈 문구 색(회색) */
+.history-empty{
+   color: rgba(0,0,0,.45); /* 어두운 배경 기준 회색 */
+  font-size: 12px;
+}
+
+/* 줄바꿈(\n) 그대로 표시 */
+.desc, .line, .dex-desc, .dex-line {
+  white-space: pre-line;
+}
+
+/* ✅ 도감: 설명/대사 줄바꿈 + 2줄 클램프 */
+.dex-item.unlocked .dex-desc,
+.dex-item.unlocked .dex-line{
+  width:100%;
+  color:#111;
+  line-height:1.3;
+  overflow: visible !important; 
+
+  display:block !important;
+  -webkit-box-orient:vertical;
+
+    line-clamp: 3;           /* ✅ 표준(린터 만족) */
+  -webkit-line-clamp: 3;   /* ✅ 웹킷(실제 동작) */
+
+  white-space:pre-line;  /* \n 줄바꿈 적용 */
+  word-break:keep-all;
+}
+
+
+/* =========================
+   FINAL DEX FIX (FORCED)
+   ========================= */
+
+#dexGrid{
+  display:grid !important;
+  grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+  gap:12px !important;
+  align-items: stretch !important;
+  overflow:auto !important;
+}
+
+.dex-item{
+  position:relative !important;
+  width:100% !important;
+  aspect-ratio: 1 / 1.5 !important;
+  border-radius:14px !important;
+  background: rgba(255,255,255,.92) !important;
+  border:1px solid rgba(0,0,0,.2) !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  overflow:hidden !important;
+  padding:12px !important;
+  box-sizing:border-box !important;
+}
+
+/* 미획득: 볼만 진하게, 크기 고정(획득 카드와 동일 카드 크기) */
+.dex-item.locked{
+  flex-direction:column !important;
+}
+
+.dex-item.locked .dex-ball{
+  width:84px !important;
+  height:84px !important;
+  object-fit:contain !important;
+  opacity:1 !important;
+  filter:none !important;
+}
+
+/* 획득: 뒤에 흐린 볼 */
+.dex-item.unlocked{
+  flex-direction:column !important;
+  justify-content:flex-start !important;
+}
+
+.dex-item.unlocked .dex-ball.bg{
+  position:absolute !important;
+  top:30% !important;
+  left:47% !important;
+  transform:translate(-50%,-50%) !important;
+  width:300px !important;
+  height:300px !important;
+  object-fit:contain !important;
+  opacity:0.18 !important;
+  pointer-events:none !important;
+  z-index:0 !important;
+}
+
+/* 카드 내용은 위로 */
+.dex-item.unlocked .dex-info{
+  position:absolute !important;
+  inset:10px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  gap:6px !important;
+  text-align:center !important;
+  overflow:hidden !important;
+  z-index:1 !important;
+}
+
+/* 캐릭터 이미지 */
+.dex-item.unlocked .dex-char{
+  height:44% !important;
+  max-width:100% !important;
+  width:auto !important;
+  object-fit:contain !important;
+  flex:0 0 auto !important;
+}
+
+/* 텍스트 */
+.dex-item.unlocked .dex-grade{ font-size:11px !important; opacity:.7 !important; }
+.dex-item.unlocked .dex-name{ font-size:16px !important; font-weight:900 !important; }
+.dex-item.unlocked .dex-type{ font-size:11px !important; opacity:.6 !important; }
+
+.dex-item.unlocked .dex-desc{
+  width:100% !important;
+  font-size:13px !important;
+  line-height:1.35 !important;
+  white-space:pre-line !important;
+  overflow:hidden !important;
+  max-height: calc(1.35em * 2) !important;
+}
+
+.dex-item.unlocked .dex-line{
+  width:100% !important;
+  font-size:20px !important; /* 도감 폰트 크기*/
+  font-weight:500 !important;
+  white-space:pre-line !important;
+  overflow:hidden !important;
+  max-height: calc(1.35em * 2) !important;
+}
+
+
+/* 카드 전체는 투명 유지 */
+.info-card{
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* 텍스트 박스: "캐릭터별 배경색" + "이미지" 2레이어 */
+.card-body{
+  --tb-bg: rgba(160, 80, 60, .55);          /* 캐릭터별로 JS에서 바꿀 값 */
+  --tb-img: url("./assets/ui/textbox/default.png"); /* 캐릭터별로 JS에서 바꿀 값 */
+
+  position: relative;
+  background: var(--tb-bg);                 /* ✅ 뒤 배경색(프레임) */
+  border-radius: 18px;
+  padding: 16px 16px 18px;
+  overflow: hidden;
+}
+
+/* ✅ 텍스트 박스 이미지 (card-body 크기에 딱 맞게) */
+.card-body::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image: var(--tb-img);
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size: 100% 100%;               /* ✅ 박스 크기 정확히 맞춤 */
+  pointer-events:none;
+  z-index: 0;
+}
+
+/* 글씨는 이미지 위로 */
+.card-body > *{
+  position:relative;
+  z-index: 1;
+}
+
+.card-body{
+  --tb-bg: rgba(255,255,255,.55);  /* 캐릭터별로 JS에서만 바뀜 */
+  position: relative;
+  background: var(--tb-bg);
+  border-radius: 18px;
+  padding: 16px 16px 18px;
+  overflow: hidden;
+}
+
+/* ✅ 통일 텍스트 박스 이미지 1개 */
+.card-body::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image: url("./assets/ui/textbox/common.png"); /* ← 여기만 바꿔 */
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size: 100% 100%;
+  pointer-events:none;
+  z-index:0;
+}
+
+.card-body > *{
+  position:relative;
+  z-index:1;
+}
+/* ✅ 도감 카드: 대사 3줄 보장 */
+.dex-item.unlocked .dex-line{
+  line-height: 1.3 !important;
+  max-height: calc(1.3em * 3) !important;   /* 3줄 */
+  overflow: hidden !important;
+
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 3 !important;         /* 3줄까지만 */
+  line-clamp: 3 !important;
+
+  white-space: pre-line !important;
+  word-break: keep-all !important;
+}
+/* 도감 카드 대사: 2줄 고정(각 줄은 줄바꿈 금지) */
+.dex-line.fit-2line{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+
+.dex-line.fit-2line .fit-line{
+ display:block !important;
+  white-space: nowrap !important;
+  overflow:hidden !important;
+  text-overflow: ellipsis !important;
+
+  line-height: 1.25 !important;
+  font-weight: 700 !important;
+}
+
+/* ✅ 도감(획득 카드): 내용이 남는 공간을 쓰도록 + 대사 잘림 규칙 제거 */
+.dex-item.unlocked .dex-info{
+  position: relative !important;
+  inset: auto !important;
+  height: 100% !important;
+  overflow: visible !important;
+}
+
+/* ✅ 2줄 고정(span 2개) 방식에서는 .dex-line에 clamp/max-height 걸면 안됨 */
+.dex-item.unlocked .dex-line.fit-2line{
+  max-height: none !important;
+  overflow: visible !important;
+  display: flex !important;
+  -webkit-line-clamp: unset !important;
+  line-clamp: unset !important;
+  /* 대사 영역이 남은 공간을 더 먹게 */
+  flex: 1 1 auto !important;
+  min-height: 96px !important; /* 두 줄 크게 보이게 최소 높이 */
+}
+.dex-item.unlocked .dex-line.fit-2line .fit-line{
+  white-space: nowrap !important; /* 각 문장 = 한 줄 */
+}
+/* 설명/대사 잘라내던 2줄 제한 제거 */
+.dex-item.unlocked .dex-desc,
+.dex-item.unlocked .dex-line{
+  max-height: none !important;
+  overflow: visible !important;
+  display: block !important;
+}
+/* ✅ 빨간 영역: 설명+대사 박스 */
+.dex-item.unlocked .dex-textbox{
+  width: 100% !important;
+  margin-top: 0px !important;
+  padding: 14px 14px !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-sizing: border-box !important;
+
+  /* 남는 공간을 이 박스가 먹게 */
+  flex: 1 1 auto !important;
+}
+/* 줄바꿈은 보이게(\n), 줄바꿈 없으면 자동 줄바꿈 */
+.dex-item.unlocked .dex-desc,
+.dex-item.unlocked .dex-line{
+  white-space: pre-line !important; /* \n 보임, 나머진 자동 줄바꿈 */
+  word-break: keep-all !important;
+}
+
+/* 폰트 크게(원하면 숫자만 더 올리면 됨) */
+.dex-item.unlocked .dex-desc{
+  font-size: 18px !important;
+  line-height: 1.35 !important;
+  opacity: .9 !important;
+  margin-bottom: 10px !important;
+}
+
+.dex-item.unlocked .dex-line{
+  font-size: 18px !important;      /* ✅ 대사 크게 */
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+  
+}
+
+/* 이미지가 너무 크게 공간 먹으면 줄여서 텍스트 공간 확보 */
+.dex-item.unlocked .dex-char{
+  height: 38% !important;          /* 34~42% 사이로 취향 조절 */
+}
+/* =========================
+   DEX: 등급 / 이름 / 분류 크게
+   ========================= */
+
+.dex-item.unlocked .dex-grade{
+  font-size: 13px !important;   /* 기존 12~14 → 크게 */
+  font-weight: 800 !important;
+  letter-spacing: .02em;
+  margin-top: 10px !important;
+}
+
+.dex-item.unlocked .dex-name{
+  font-size: 18px !important;   /* 캐릭터 이름 크게 강조 */
+  font-weight: 900 !important;
+  margin-top: 5px !important;
+}
+
+.dex-item.unlocked .dex-type{
+  font-size: 13px !important;
+  opacity: .85 !important;
+  margin-top: 5px !important;
+}
+
+/* iPhone 등 모바일에서: 한 화면에 고정 분할 */
+.app{
+  height: 100dvh;      /* Safari 주소창 변화 대응 */
+  display: flex;
+  flex-direction: column;
+}
+
+.screen{
+  flex: 0 0 70%;
+  min-height: 0;
+}
+
+.bottom{
+  flex: 0 0 30%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* 히스토리는 내부 스크롤 */
+.history{
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+}
+/* =========================
+   볼 버튼 + 힌트 위치 아래로 이동
+   ========================= */
+ /* 볼 위치는 래퍼가 담당 (transform 충돌 방지) */
+.ball-wrap{
+  transform: translateY(70px); /* 원하는 만큼 조절 */
+}
+
+#headline{
+  transform: translateY(30px);
+}
+
+
+/* =========================
+   BALL ANIMATIONS
+   - 빈볼: 둥둥(구름처럼)
+   - 색볼: 통통 튀고(팝) 흔들림
+   ========================= */
+
+/* 빈볼 둥둥 */
+.ball-btn.is-idle{
+  animation: ballFloat 2.6s ease-in-out infinite;
+}
+
+/* 색볼: 팝 + 흔들기 (클래스로 트리거) */
+.ball-btn.is-colored{
+  animation:
+    ballPop 260ms cubic-bezier(.2,.9,.2,1) 0ms both,
+    ballPokemon 2.4s ease-in-out 260ms infinite;
+}
+
+/* 둥둥 */
+@keyframes ballFloat{
+  0%   { transform: translateY(0px); }
+  50%  { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+/* 통통 튀기(등장) */
+@keyframes ballPop{
+  0%   { transform: translateY(14px) scale(.92); }
+  70%  { transform: translateY(-8px) scale(1.02); }
+  100% { transform: translateY(0px) scale(1); }
+}
+
+/* 포켓몬처럼 흔들림 */
+@keyframes ballShake{
+  0%   { transform: rotate(0deg); }
+  15%  { transform: rotate(-10deg); }
+  30%  { transform: rotate(10deg); }
+  45%  { transform: rotate(-8deg); }
+  60%  { transform: rotate(8deg); }
+  75%  { transform: rotate(-5deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* 포켓몬 포획 같은 리듬 */
+@keyframes ballPokemon{
+  /* 시작 - 가만히 */
+  0%   { transform: rotate(0deg); }
+
+  /* 첫 흔들 */
+  10%  { transform: rotate(-10deg); }
+  20%  { transform: rotate(10deg); }
+  30%  { transform: rotate(-6deg); }
+  40%  { transform: rotate(6deg); }
+  50%  { transform: rotate(0deg); }
+
+  /* 멈춤 텀 */
+  65%  { transform: rotate(0deg); }
+
+  /* 두번째 흔들 */
+  75%  { transform: rotate(-8deg); }
+  85%  { transform: rotate(8deg); }
+  95%  { transform: rotate(0deg); }
+
+  /* 다시 멈춤 → 루프 */
+  100% { transform: rotate(0deg); }
+}
+/* =========================
+   TYPE FX (배경 타입 )
+   ========================= */
+
+.type-fx{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  overflow:hidden;
+  z-index: 12;          /* 필요시 조절 */
+  opacity: 0;
+  transition: opacity .12s ease-out;
+}
+
+.type-fx.on{ opacity: 1; }
+
+/* 배경에 타입 이미지 크게(포켓몬 느낌) */
+
+/* 파동 링(중앙에서 퍼짐) */
+.type-fx .ring{
+  position:absolute;
+  left:50%;
+  top:60%;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 3px solid rgba(255,255,255,.75);
+  transform: translate(-50%,-50%) scale(.25);
+  opacity: 0;
+  animation: ringPulse 1200ms ease-out 0ms 1 both;
+  filter: drop-shadow(0 0 10px rgba(255,255,255,.35));
+}
+
+@keyframes ringPulse{
+  0%   { opacity: 0; transform: translate(-50%,-50%) scale(.25); }
+  12%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(8.0); }
+}
+
+/* 반짝 파티클(폭발) - 아이콘은 정방향, 이동만 사방으로 */
+.type-fx .spark{
+  position:absolute;
+  left:50%;
+  top:60%;
+  width: var(--s, 26px);
+  height: var(--s, 26px);
+  opacity: 0;
+  transform: translate(-50%,-50%) scale(.6); /* ✅ rotate 없음 */
+  animation: sparkBurst 2000ms cubic-bezier(.2,.9,.2,1) var(--delay,0ms) 1 both;
+  filter: drop-shadow(0 0 10px rgba(255,255,255,.35));
+  animation: sparkBurst 2000ms cubic-bezier(.2,.9,.2,1) var(--delay,0ms) 1 both,
+             sparkTwinkle 260ms ease-in-out var(--delay,0ms) 2 both;
+}
+@keyframes sparkTwinkle{
+  0%,100%{ filter: drop-shadow(0 0 6px rgba(255,255,255,.25)); }
+  50%{ filter: drop-shadow(0 0 14px rgba(255,255,255,.55)); }
+}
+@keyframes sparkBurst{
+  0%{
+    opacity: 0;
+    transform: translate(-50%,-50%) translate(0px,0px) scale(.55);
+  }
+  12%{ opacity: 1; }
+  100%{
+    opacity: 0;
+    transform:
+      translate(-50%,-50%)
+      translate(var(--dx, 0px), var(--dy, -140px)) /* ✅ 사방 퍼짐 벡터 */
+      scale(1.25);
+  }
+}
+
+/* NEW 배지 */
+#newBadge{
+  position:absolute;
+  top: 12px;
+  left: 12px;
+  right:auto;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 900;
+  letter-spacing: .5px;
+  background: rgba(246, 201, 76, 0.837);
+  color: #111;
+  z-index: 50;
+  transform: scale(.9);
+  opacity: 0;
+}
+#newBadge:not(.hidden){
+  animation: newBadgePop 520ms cubic-bezier(.2,.9,.2,1) both; /*신규카드 이펙트*/
+}
+@keyframes newBadgePop{
+  0%   { opacity:0; transform: scale(.7) rotate(-8deg); }
+  55%  { opacity:1; transform: scale(1.15) rotate(2deg); }
+  100% { opacity:1; transform: scale(1.0) rotate(0deg); }
+}
+
+/* 신규 카드 임팩트: 카드가 '팡' 하고 뜨는 느낌 */
+.info-card.new-hit{
+  animation: newCardHit 1000ms cubic-bezier(.2,.9,.2,1) both;
+}
+@keyframes newCardHit{
+ 0%   { transform: translate(-50%, -50%) translateY(10px) scale(.92); filter: brightness(1.0); }
+  55%  { transform: translate(-50%, -50%) translateY(0px)  scale(1.03); filter: brightness(1.15); }
+  100% { transform: translate(-50%, -50%) translateY(0px)  scale(1.0);  filter: brightness(1.0); }
+}
+
+/* 화면 번쩍(플래시) */
+#screen.flash{
+  animation: screenFlash 220ms ease-out 1 both;
+}
+@keyframes screenFlash{
+  0%   { filter: brightness(1.0); }
+  40%  { filter: brightness(1.35); }
+  100% { filter: brightness(1.0); }
+}
+
+
+/* 포켓몬 등장 텍스트 느낌 */
+.headline,
+.hint{
+  transform-origin: center;
+}
+
+/* 한번 재생용 클래스 */
+.poke-pop{
+  animation: pokePop 520ms cubic-bezier(.2, 1.2, .2, 1) both;
+}
+
+.poke-wiggle{
+  animation: pokeWiggle 900ms ease-in-out 520ms 1 both; /* pop 끝난 뒤 wiggle 1회 */
+}
+
+/* “툭!” 하고 나타나는 느낌 */
+@keyframes pokePop{
+  0%   { transform: translateY(-8px) scale(.96); opacity: 0; }
+  60%  { transform: translateY(2px)  scale(1.02); opacity: 1; }
+  100% { transform: translateY(0)   scale(1); }
+}
+
+/* 포켓몬 대사창 특유의 살짝 흔들림 */
+@keyframes pokeWiggle{
+  0%   { transform: translateX(0); }
+  15%  { transform: translateX(-2px); }
+  30%  { transform: translateX(2px); }
+  45%  { transform: translateX(-1px); }
+  60%  { transform: translateX(1px); }
+  100% { transform: translateX(0); }
+}
+
+
