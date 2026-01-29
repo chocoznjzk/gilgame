@@ -316,7 +316,7 @@ window.GILKEMON_POOL = [
 //ssr 
       {
     id: "SSR-01",
-    grade: "sr",
+    grade: "ssr",
     name: "비담",
     type: "선덕여왕",
     line: "“덕만까지 70보... 덕만까지 30보... 덕만까지 10보....”",
@@ -327,7 +327,7 @@ window.GILKEMON_POOL = [
   },
    {
     id: "SSR-02",
-    grade: "sr",
+    grade: "ssr",
     name: "이윤",
     type: "도적",
     line: "“이렇게 가만히 계실 겁니까?”",
@@ -338,7 +338,7 @@ window.GILKEMON_POOL = [
   },
      {
     id: "SSR-03",
-    grade: "sr",
+    grade: "ssr",
     name: "정재곤",
     type: "무뢰한",
     line: "“새해 복 많이 받아라.”",
@@ -350,7 +350,7 @@ window.GILKEMON_POOL = [
   },
        {
     id: "SSR-04",
-    grade: "sr",
+    grade: "ssr",
     name: "허경훈",
     type: "클로젯",
     line: "“제가 좀 대단하거든요. \n근데 귀신보다 사람이 더 무서워요.”",
@@ -361,7 +361,7 @@ window.GILKEMON_POOL = [
   },
       {
     id: "SSR-05",
-    grade: "sr",
+    grade: "ssr",
     name: "반",
     type: "아일랜드",
     line: "“한순간만이라도 사람의 마음으로 살아보고 싶어”",
@@ -373,7 +373,7 @@ window.GILKEMON_POOL = [
     
        {
     id: "SSR-06",
-    grade: "sr",
+    grade: "ssr",
     name: "김해일",
     type: "열혈사제",
     line: "“용서는 당사자한테 \n찾아가서 해야지.\n성당에서 구하는 게 아니야.”",
@@ -398,7 +398,7 @@ window.GILKEMON_POOL = [
   },
         {
     id: "SSR-07",
-    grade: "sr",
+    grade: "ssr",
     name: "이도",
     type: "트리거",
     line: "“아니, 그런 유토피아는 없어.\n 서로가 죽고 죽이는 상황들이 반복되는 지옥만 있을 뿐이지.”",
@@ -406,6 +406,17 @@ window.GILKEMON_POOL = [
     ballImg: "./assets/balls/ssr.png",
     cardMp4: "./assets/chars/이도.mp4",
     charImg: "./assets/chars/이도.png",
+  },
+      {
+    id: "SSR-08",
+    grade: "ssr",
+    name: "흑해일",
+    type: "열혈사제",
+    line: "“더 이상 어떠한 자비도 바라지 마.\n난 이제 더 이상 신부가 아니거든.”",
+    desc: "",
+    ballImg: "./assets/balls/ssr.png",
+    cardMp4: "./assets/chars/흑해일.mp4",
+    charImg: "./assets/chars/흑해일.png",
   },
   
      {
