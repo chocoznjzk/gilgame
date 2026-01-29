@@ -28,6 +28,8 @@ const cardBody = document.querySelector("#cardBody");
 
 const infoCard = document.querySelector("#infoCard");
 const charImgEl = document.querySelector("#charImg");
+const charVideoEl = document.querySelector("#charVideo");
+
 const charGradeEl = document.querySelector("#charGrade");
 const charTypeEl = document.querySelector("#charType");
 const charNameEl = document.querySelector("#charName");
@@ -36,6 +38,7 @@ const charLineEl = document.querySelector("#charLine");
 
 const eventOverlay = document.querySelector("#eventOverlay");
 const eventImg = document.querySelector("#eventImg");
+const eventVideo = document.querySelector("#eventVideo");
 
 const toastEl = document.querySelector("#toast");
 const FIRST_BG = "./assets/bg/눈.jpeg"; // 첫 화면 고정 배경
@@ -570,6 +573,37 @@ function hideDex() {
   }
 }
 
+let _videoEndedHandler = null;
+
+function playVideoNTimes(videoEl, times = Infinity){
+  // 무한
+  if (!isFinite(times)) {
+    videoEl.loop = true;
+    videoEl.currentTime = 0;
+    videoEl.play().catch(()=>{});
+    return;
+  }
+
+  // N번 재생
+  videoEl.loop = false;
+  let count = 0;
+
+  if (_videoEndedHandler) videoEl.removeEventListener("ended", _videoEndedHandler);
+
+  _videoEndedHandler = () => {
+    count++;
+    if (count < times) {
+      videoEl.currentTime = 0;
+      videoEl.play().catch(()=>{});
+    }
+  };
+
+  videoEl.addEventListener("ended", _videoEndedHandler);
+
+  videoEl.currentTime = 0;
+  videoEl.play().catch(()=>{});
+}
+
 function showInfoCard(item, opts = {}) {
   screenEl.classList.add("is-dim");
   infoCard.classList.remove("hidden");
@@ -582,7 +616,33 @@ function showInfoCard(item, opts = {}) {
   screenEl.classList.remove("flash");
   newBadge.classList.add("hidden");
   // ✅ 카드에서는 GIF(있으면) 우선, 없으면 기존 캐릭터 이미지
-  charImgEl.src = item.cardGif || item.charImg || "";
+  const gifOrPng = item.cardGif || item.charImg || "";
+  const mp4 = item.cardMp4 || item.mp4 || "";   // 네가 쓸 필드명
+   if (mp4 && charVideoEl) {
+    // video ON, img OFF
+    charImgEl.classList.add("hidden");
+    charVideoEl.classList.remove("hidden");
+
+    // 소스 교체
+    if (charVideoEl.src !== mp4) charVideoEl.src = mp4;
+
+    // ✅ 무한 or 2번
+    // 무한: playVideoNTimes(charVideoEl, Infinity)
+    // 2번: playVideoNTimes(charVideoEl, 2)
+    playVideoNTimes(charVideoEl, Infinity); // <- 여기만 바꾸면 됨
+  } else {
+    // img ON, video OFF
+    if (charVideoEl) {
+      charVideoEl.pause();
+      charVideoEl.removeAttribute("src");
+      charVideoEl.load();
+      charVideoEl.classList.add("hidden");
+    }
+    charImgEl.classList.remove("hidden");
+    charImgEl.src = gifOrPng;
+  }
+
+  infoCard.classList.remove("hidden");
 ;
 
 if (isNew){
@@ -646,9 +706,35 @@ function hideInfoCard() {
 
 }
 
-function showEventImage(src) {
-  if (!src) return;
-  eventImg.src = src;
+function showEventMedia(item) {
+  const mp4 = item.eventMp4 || item.eventNoMp4 || "";
+  const gif = item.eventGif || "";
+
+  // 비디오 먼저
+  if (mp4 && eventVideo) {
+    eventImg.classList.add("hidden");
+    eventVideo.classList.remove("hidden");
+
+    if (eventVideo.src !== mp4) eventVideo.src = mp4;
+
+    // 무한(원하면 2번: playVideoNTimes(eventVideo, 2))
+    playVideoNTimes(eventVideo, Infinity);
+
+    eventVideo.currentTime = 0;
+    eventVideo.play().catch(() => {});
+  } else {
+    // gif/이미지
+    if (eventVideo) {
+      eventVideo.pause();
+      eventVideo.removeAttribute("src");
+      eventVideo.load();
+      eventVideo.classList.add("hidden");
+    }
+
+    eventImg.classList.remove("hidden");
+    eventImg.src = gif; // ✅ 여기서 gif를 넣어야 함 (재귀 호출 X)
+  }
+
   eventOverlay.classList.remove("hidden");
   eventOverlay.setAttribute("aria-hidden", "false");
 }
@@ -656,8 +742,17 @@ function showEventImage(src) {
 function hideEventImage() {
   eventOverlay.classList.add("hidden");
   eventOverlay.setAttribute("aria-hidden", "true");
-  eventImg.src = "";
+
+  // ✅ 비디오 쓰는 경우도 정리
+  if (eventVideo) {
+    eventVideo.pause();
+    eventVideo.removeAttribute("src");
+    eventVideo.load();
+    eventVideo.classList.add("hidden");
+  }
+  if (eventImg) eventImg.src = "";
 }
+
 
 function showToast(text) {
   toastEl.textContent = text;
@@ -706,10 +801,10 @@ async function handleBallClick() {
     state.isLocked = true;
     ballBtn.classList.remove("is-idle");   //  클릭하면 둥둥 멈춤
 
-
-    const item = pickRandom(getPool());
-    //const pool = getPool();
-   // const item = pool.find(x => x.id === "SR-CHOICE-01") ?? pickRandom(pool);
+ //테스트
+  //const item = pickRandom(getPool());
+   const pool = getPool();
+   const item = pool.find(x => x.id === "SPECIAL-01") ?? pickRandom(pool);
 
     state.current = item;
 
@@ -766,6 +861,7 @@ async function handleBallClick() {
 
 // ===== 화면 아무데나 터치: 진행 흐름 =====
 async function handleAnyTap(e) {
+  //if (e.target.closest("#infoCard")) return;
    if (e.target.closest("#dexGrid")) return;
     // 도감 열려있으면 게임 진행 터치 무시
     if (!dexOverlay.classList.contains("hidden")) return;
@@ -807,7 +903,7 @@ async function handleAnyTap(e) {
       charNameEl.textContent = item.name || "";
 
       // 타이핑
-      const raw = item.line || "";
+      const raw = item.eline || "";
       const line = raw.startsWith("“") || raw.startsWith("\"") ? raw : `“${raw}”`;
       typewriter(charLineEl, line, 70); // 타이핑 속도 조절
 
@@ -822,7 +918,9 @@ async function handleAnyTap(e) {
 
       // INFO -> BLACK_EVENT
       state.mode = "BLACK_EVENT";
-      showEventImage(item.eventImg || "./assets/events/black-event.png");
+      hideInfoCard();
+      showEventMedia(item);
+     // showEventMedia(item.eventMp4 || "./assets/events/black-event.png");
       showToast("제가 방해하지\n말라고 했을텐데요?");
       state.isLocked = false;
       return;
@@ -842,7 +940,7 @@ async function handleAnyTap(e) {
 // 선택 결과 화면에서 터치 -> idle
   if (state.mode === "CHOICE_RESULT") {
     hideToast();
-    setIdle();
+    setIdle(true);
     return;
   }
   
@@ -903,29 +1001,87 @@ function typewriter(el, text, speed = 130) {
 state.dex = loadDex(); // (지금은 화면에 안 보여주지만, 저장은 시작해둠)
 
 ballBtn.addEventListener("click", handleBallClick);
-screenEl.addEventListener("click", handleAnyTap);
+screenEl.addEventListener("click", handleAnyTap, true);
 
 renderHistory();
 setIdle();
-function applyChoice(item, which) {
-  // which: "yes" | "no"
-  const img  = (which === "yes") ? (item.choiceYesImg || "") : (item.choiceNoImg || "");
-  const line = (which === "yes") ? (item.choiceYesLine || "") : (item.choiceNoLine || "");
 
-  // 화면 어둡게 유지 + 버튼 숨기기
+function setCardMedia(src){
+  const isVideo = /\.mp4($|\?)/i.test(src) || /\.webm($|\?)/i.test(src);
+
+  if (isVideo) {
+    charImgEl.classList.add("hidden");
+    charVideoEl.classList.remove("hidden");
+
+    charVideoEl.src = src;
+    charVideoEl.muted = true;
+    charVideoEl.playsInline = true;
+    charVideoEl.autoplay = true;
+    charVideoEl.loop = true; // 무한 반복(원하면)
+
+    charVideoEl.play().catch(()=>{});
+  } else {
+    charVideoEl.pause();
+    charVideoEl.removeAttribute("src");
+    charVideoEl.load();
+    charVideoEl.classList.add("hidden");
+
+    charImgEl.src = src;
+    charImgEl.classList.remove("hidden");
+  }
+}
+
+function applyChoice(item, which) {
+  // ✅ 네가 말한 대로 eventMp4/eventGif 기반으로 재생
+  const media = (which === "yes")
+    ? (item.eventMp4 || item.eventGif || "")
+    : (item.eventNoMp4 || item.eventNoGif || item.choiceNoImg || "");
+
+  const line  = (which === "yes") ? (item.choiceYesLine || "") : (item.choiceNoLine || "");
+
   choiceRow.classList.add("hidden");
 
-  // 카드 내용 업데이트: 이미지 교체 + 대사 타이핑
-  if (img) charImgEl.src = img;
+  if (media) setCardMedia(media);
 
-  // 대사 타이핑(특수SSR이랑 동일한 typewriter 사용)
   const text = line ? (line.startsWith("“") || line.startsWith("\"") ? line : `“${line}”`) : "";
   typewriter(charLineEl, text, 150);
 
-  // 이제부터는 한 번 더 터치하면 닫히게
   state.mode = "CHOICE_RESULT";
   showToast("한 번 더 터치하면 돌아가요");
 }
+
+
+// (선택) 2회 반복하고 싶을 때만 사용:
+let _loop2Count = 0;
+function playVideoTwice(){
+  _loop2Count = 0;
+  charVideoEl.loop = false;
+  charVideoEl.onended = () => {
+    _loop2Count += 1;
+    if (_loop2Count < 2) {
+      charVideoEl.currentTime = 0;
+      charVideoEl.play().catch(()=>{});
+    } else {
+      charVideoEl.onended = null;
+    }
+  };
+}
+
+/*function applyChoice(item, which) {
+  const media = (which === "yes") ? (item.choiceYesImg || "") : (item.choiceNoImg || "");
+  const line  = (which === "yes") ? (item.choiceYesLine || "") : (item.choiceNoLine || "");
+
+  choiceRow.classList.add("hidden");
+
+  if (media) setCardMedia(media);
+
+  const text = line ? (line.startsWith("“") || line.startsWith("\"") ? line : `“${line}”`) : "";
+  typewriter(charLineEl, text, 150);
+
+  state.mode = "CHOICE_RESULT";
+  showToast("한 번 더 터치하면 돌아가요");
+}*/
+
 
 // 버튼 클릭은 screen 클릭(handleAnyTap)으로 전달되지 않게 막기
 choiceYes.addEventListener("click", (e) => {
@@ -936,6 +1092,7 @@ choiceYes.addEventListener("click", (e) => {
   applyChoice(item, "yes");
 });
 
+
 choiceNo.addEventListener("click", (e) => {
   e.stopPropagation();
   if (state.mode !== "INFO") return;
@@ -943,7 +1100,7 @@ choiceNo.addEventListener("click", (e) => {
   if (!item || !isChoiceSR(item)) return;
   applyChoice(item, "no");
 });
-
+choiceNo.addEventListener("pointerup", (e) => choiceNo.click());
 
 
 // 오버레이 바깥(배경) 눌러 닫기

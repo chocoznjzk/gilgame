@@ -24,6 +24,8 @@
       <!-- 캐릭터 정보 카드 -->
       <div class="info-card hidden" id="infoCard" aria-hidden="true">
         <div class="new-badge hidden" id="newBadge">NEW!</div>
+        <video class="char-img hidden" id="charVideo"
+            playsinline muted autoplay preload="metadata"></video>
         <img class="char-img" id="charImg" alt="" />
         <div class="card-body" id="cardBody">
         <div class="meta">
@@ -43,6 +45,14 @@
 
       <!-- 특수 이벤트 이미지(블랙/특수SSR) -->
       <div class="event-overlay hidden" id="eventOverlay" aria-hidden="true">
+        <video 
+      class="event-img hidden"
+      id="eventVideo"
+       playsinline
+      muted
+      autoplay
+      preload="metadata">
+      </video>
         <img class="event-img" id="eventImg" alt="event" />
       </div>
 

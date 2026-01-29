@@ -207,7 +207,7 @@ body{
 .char-img{
   width: 95%;
   height: auto;
-  max-height : 220px;
+  max-height : 160px;
   border-radius:  0 !important; 
   background: transparent !important;
   box-shadow: none !important;
@@ -1388,7 +1388,7 @@ body{
 #infoCard.info-card{
   position: fixed !important;   /* 핵심 */
   left: 50% !important;
-  top: 38% !important;
+  top: 35% !important;
   transform: translate(-50%, -50%) !important;
   z-index: 100000 !important;
 
@@ -1402,4 +1402,32 @@ body{
   position: fixed !important;
   inset: 0 !important;
   z-index: 99999 !important;
+}
+
+/* charImg와 동일하게 먹도록 */
+#charVideo.char-img{
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain; /* (기존 img가 cover 느낌이면 유지) */
+}
+
+.hidden{ display:none !important; }
+
+/* ✅ 선택 버튼 터치가 무조건 먹게: 버튼 레이어를 최상단으로 */
+.choice-row{
+  position: relative;
+  z-index: 200000;
+}
+
+.choice-btn{
+  position: relative;
+  z-index: 200001;
+  pointer-events: auto;
+}
+
+/* ✅ (중요) 카드 상단 미디어가 버튼 영역을 덮어도 터치 방해 못하게 */
+#charImg,
+#charVideo{
+  pointer-events: none;
 }
