@@ -415,7 +415,7 @@ body{
 
 /* 화면 위/아래 여백이 부족한 기기 대응 */
 @media (max-height: 740px){
-  .info-card{ top: 54%; }
+  .info-card{ top: 50%; }
   .char-img{ width: min(260px, 68vw); }
 }
 
@@ -1363,6 +1363,22 @@ body{
   45%  { transform: translateX(-1px); }
   60%  { transform: translateX(1px); }
   100% { transform: translateX(0); }
+}
+/* === iOS Safari: DEX 카드 겹침 방지 (최종 덮어쓰기) === */
+#dexGrid{
+  grid-auto-rows: 240px !important; /* 카드 한 장 높이 확정 */
+  align-content: start !important;
+}
+
+.dex-item{
+  aspect-ratio: auto !important; /* iOS grid + aspect-ratio 버그 회피 */
+  height: 240px !important;      /* row 높이와 동일하게 */
+}
+
+/* 혹시 텍스트가 밖으로 튀어나오며 "겹쳐 보이는" 경우까지 차단 */
+.dex-item,
+.dex-item *{
+  overflow: hidden;
 }
 
 
