@@ -35,7 +35,7 @@ body{
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
-  background-color:rgb(0, 0, 0);
+  background-color:rgba(0, 0, 0, 0.892);
   /* 화면을 80/20으로 나누기 위해 뷰포트 높이를 고정 */
   height: calc(var(--vh, 1vh) * 100);
   min-height: calc(var(--vh, 1vh) * 100);
@@ -230,7 +230,7 @@ body{
   letter-spacing: .3px;
   padding: 2px 9px;
   border-radius: 999px;
-  background: rgba(255,255,255,.8);
+  background: rgba(133, 193, 241, 0.577);
   border: 1px solid rgba(0,0,0,1);
 }
 
@@ -310,7 +310,7 @@ body{
 
 /* 히스토리 */
 .history{
-  background-color: azure;
+  background-color: rgb(255, 255, 255);
   border:1px solid var(--line);
   width: 100%;
   height: auto;
@@ -453,7 +453,7 @@ body{
   padding:12px 12px;
   border-radius:14px;
   border:1px solid rgba(0,0,0,.1);
-  background:rgba(255,255,255,.9);
+  background:rgba(149, 151, 156, 0.9);
   font-weight:800;
 }
 
@@ -937,7 +937,7 @@ body{
 /* 텍스트 박스: "캐릭터별 배경색" + "이미지" 2레이어 */
 .card-body{
   --tb-bg: rgba(160, 80, 60, .55);          /* 캐릭터별로 JS에서 바꿀 값 */
-  --tb-img: url("./assets/ui/textbox/default.png"); /* 캐릭터별로 JS에서 바꿀 값 */
+  --tb-img: url(""); /* 캐릭터별로 JS에서 바꿀 값 */
 
   position: relative;
   background: var(--tb-bg);                 /* ✅ 뒤 배경색(프레임) */
@@ -979,7 +979,7 @@ body{
   content:"";
   position:absolute;
   inset:0;
-  background-image: url("./assets/ui/textbox/common.png"); /* ← 여기만 바꿔 */
+  background-image: url(""); /* ← 여기만 바꿔 */
   background-repeat:no-repeat;
   background-position:center;
   background-size: 100% 100%;
@@ -1430,4 +1430,17 @@ body{
 #charImg,
 #charVideo{
   pointer-events: none;
+}
+/* DEX가 카드보다 무조건 위 */
+#dexOverlay,
+.dex-overlay{
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 120000 !important; /* 100000(카드)보다 크게 */
+}
+
+/* 도감 패널/상세도 한 단계 더 위로 */
+#dexOverlay .dex-panel,
+#dexOverlay .dex-detail{
+  z-index: 120001 !important;
 }

@@ -41,7 +41,7 @@ const eventImg = document.querySelector("#eventImg");
 const eventVideo = document.querySelector("#eventVideo");
 
 const toastEl = document.querySelector("#toast");
-const FIRST_BG = "./assets/bg/눈.jpeg"; // 첫 화면 고정 배경
+const FIRST_BG = "./assets/bg/하늘5.jpg"; // 첫 화면 고정 배경
 screenEl.style.backgroundImage = `url("${FIRST_BG}")`;
 screenEl.style.backgroundPosition = "center";
 screenEl.style.backgroundRepeat = "no-repeat";
@@ -53,9 +53,21 @@ const historyList = document.querySelector("#historyList");
 const typeFx = document.querySelector("#typeFx");
 // ===== Screen BG (카드 닫을 때만 랜덤 교체) =====
 const SCREEN_BGS = [
-  "./assets/bg/눈.jpeg",
-  "./assets/bg/바다.png",
-  "./assets/bg/바닷속.png",
+  "./assets/bg/하늘4.jpg",
+  "./assets/bg/하늘3.jpg",
+  "./assets/bg/하늘2.jpg",
+  "./assets/bg/하늘.jpg",
+  "./assets/bg/저녁가로등.jpg",
+  "./assets/bg/시골.jpg",
+  "./assets/bg/숲.jpg",
+  "./assets/bg/산.jpg",
+  "./assets/bg/붉은하늘.jpg",
+  "./assets/bg/밤바다.jpg",
+  "./assets/bg/밤.jpg","./assets/bg/나무.jpg",
+  "./assets/bg/달.jpg","./assets/bg/고양이.jpg",
+  "./assets/bg/하늘3.jpg","./assets/bg/가로등.jpg",
+  
+  
   //배경들 경로로 추가
 ];
 
@@ -482,7 +494,9 @@ if (dexBtn) {
     e.stopPropagation(); // screen 클릭 핸들러로 번지는 거 방지
     showDex();           // 네가 만든 showDex() 사용
      // ✅ 도감 열리고 나서 폰트 자동 조절
+  if (typeof fitDexQuoteLines === "function") {
   setTimeout(fitDexQuoteLines, 0);
+}
   });
 }
 if (dexClose) {
@@ -684,7 +698,7 @@ if (isNew){
 
   
   // 텍스트 박스 "뒤 배경색" (캐릭터별)
-  cardBody.style.setProperty("--tb-bg", item.textBoxBg || "rgba(255,255,255,.55)");
+  cardBody.style.setProperty("--tb-bg", item.textBoxBg || "rgba(255, 255, 255, 0.65)");
     // ===== 선택형 SR(그래/아니)면 버튼 노출 + 화면 더 어둡게 =====
   if (isChoiceSR(item)) {
     screenEl.classList.add("is-choice-dim");
@@ -802,9 +816,9 @@ async function handleBallClick() {
     ballBtn.classList.remove("is-idle");   //  클릭하면 둥둥 멈춤
 
  //테스트
-  //const item = pickRandom(getPool());
-   const pool = getPool();
-   const item = pool.find(x => x.id === "SPECIAL-01") ?? pickRandom(pool);
+  const item = pickRandom(getPool());
+   //const pool = getPool();
+   //const item = pool.find(x => x.id === "SPECIAL-08") ?? pickRandom(pool);
 
     state.current = item;
 
@@ -885,7 +899,7 @@ async function handleAnyTap(e) {
       state.isLocked = true;
       hideInfoCard();
       showToast(`${item.name}가 떠났습니다.`);
-      await sleep(1200);
+      await sleep(2000);
       hideToast();
       setIdle(true);
       return;
@@ -899,7 +913,6 @@ async function handleAnyTap(e) {
       // 카드 구성은 "이미지+이름+대사" 느낌으로: desc/type 숨기고 라인 타이핑
       charTypeEl.textContent = "";
       charDescEl.textContent = "";
-      charGradeEl.textContent = (item.grade || "").toUpperCase();
       charNameEl.textContent = item.name || "";
 
       // 타이핑
@@ -921,7 +934,7 @@ async function handleAnyTap(e) {
       hideInfoCard();
       showEventMedia(item);
      // showEventMedia(item.eventMp4 || "./assets/events/black-event.png");
-      showToast("제가 방해하지\n말라고 했을텐데요?");
+      showToast("감당 가능하시겠어요?");
       state.isLocked = false;
       return;
     }
@@ -958,7 +971,7 @@ async function handleAnyTap(e) {
     state.history = [{ id: item.id, name: item.name, charImg: item.charImg || "" }];
     renderHistory();
 
-    showToast("블랙이 나머지를 다 없앴다");
+    showToast("민태주가 가방에 있던\n 다른 이들을\n 없애버렸다.");
 
     // 3초 유지
     await sleep(3000);
@@ -979,7 +992,7 @@ async function handleAnyTap(e) {
 }
 
 // ===== Typewriter (특수SSR용) =====
-function typewriter(el, text, speed = 130) {
+function typewriter(el, text, speed = 150) {
   if (!el) return;
   if (el._twTimer) {
     clearInterval(el._twTimer);
@@ -1100,7 +1113,7 @@ choiceNo.addEventListener("click", (e) => {
   if (!item || !isChoiceSR(item)) return;
   applyChoice(item, "no");
 });
-choiceNo.addEventListener("pointerup", (e) => choiceNo.click());
+//choiceNo.addEventListener("pointerup", (e) => choiceNo.click());
 
 
 // 오버레이 바깥(배경) 눌러 닫기
