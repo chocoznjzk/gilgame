@@ -190,6 +190,75 @@ function isRefuseSR(item) {
   return item && item.grade === "sr" && item.special === "REFUSE";
 }
 
+function weightedPick(entries) {
+  // entries: [{ key, weight }]
+  const total = entries.reduce((s, e) => s + e.weight, 0);
+  let r = Math.random() * total;
+  for (const e of entries) {
+    r -= e.weight;
+    if (r <= 0) return e.key;
+  }
+  return entries[entries.length - 1].key;
+}
+// 미획득(도감에 없는) 카드에 가중치 부여해서 뽑기
+function pickPreferUncollected(list, boost = 4) {
+  if (!Array.isArray(list) || list.length === 0) return null;
+
+  const entries = list.map(it => ({
+    key: it,
+    weight: state.dex && state.dex.has(it.id) ? 1 : boost
+  }));
+
+  return weightedPick(entries);
+}
+
+function pickByRarity(pool) {
+  // 카테고리 분리
+  const special = pool.filter(it => it.grade === "special" && it.special === "SPECIAL_TYPING");
+  const specialSSR = pool.filter(it => it.grade === "ssr" && it.special === "SPECIAL_SSR");
+  const choiceSR = pool.filter(it => it.grade === "sr" && it.special === "CHOICE_SR");
+  const black = pool.filter(it => it.grade === "?" && it.special === "BLACK");
+
+  const ssr = pool.filter(it => it.grade === "ssr" && it.special !== "SPECIAL_SSR");
+  const sr = pool.filter(it => it.grade === "sr" && it.special !== "CHOICE_SR" && it.special !== "REFUSE");
+  const r = pool.filter(it => it.grade === "r");
+  const n = pool.filter(it => it.grade === "n");
+
+  // ✅ 네가 말한 “서열” 반영: n=r=sr < ssr < (black/choice/specialSSR) < special
+  // 아래 숫자는 “비율”이 아니라 “가중치”야. (원하는대로 조절 가능)
+  const weights = [
+    { key: "n", weight: 27 },
+    { key: "r", weight: 27 },
+    { key: "sr", weight: 25 },
+
+    { key: "ssr", weight: 13 },
+
+    // black = choice sr = special ssr (동급)
+    { key: "black", weight: 2 },
+    { key: "choiceSR", weight: 2 },
+    { key: "specialSSR", weight: 2 },
+
+    // special이 가장 높음(=가장 희귀) -> 확률 가장 낮게
+    { key: "special", weight: 4 },
+  ];
+
+  const pick = weightedPick(weights);
+
+  const list =
+    pick === "special" ? special :
+    pick === "specialSSR" ? specialSSR :
+    pick === "choiceSR" ? choiceSR :
+    pick === "black" ? black :
+    pick === "ssr" ? ssr :
+    pick === "sr" ? sr :
+    pick === "r" ? r : n;
+
+  // 해당 카테고리가 비어있으면 전체에서 랜덤 fallback
+  const candidates = (list && list.length) ? list : pool;
+  return pickPreferUncollected(candidates, 4);
+}
+
+
 // ===== Type FX =====
 // 타입별 효과 이미지 경로
 const TYPE_FX = {
@@ -821,7 +890,10 @@ async function handleBallClick() {
     ballBtn.classList.remove("is-idle");   //  클릭하면 둥둥 멈춤
 
  //테스트
-  const item = pickRandom(getPool());
+ const pool = getPool();
+  const item = pickByRarity(pool);
+  state.current = item;
+
    //const pool = getPool();
    //const item = pool.find(x => x.id === "N-01") ?? pickRandom(pool);
 
