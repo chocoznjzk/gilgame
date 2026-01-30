@@ -230,11 +230,11 @@ function pickByRarity(pool) {
   // ✅ 네가 말한 “서열” 반영: n=r=sr < ssr < (black/choice/specialSSR) < special
   // 아래 숫자는 “비율”이 아니라 “가중치”야. (원하는대로 조절 가능)
   const weights = [
-    { key: "n", weight: 27 },
-    { key: "r", weight: 27 },
-    { key: "sr", weight: 25 },
+    { key: "n", weight: 28 },
+    { key: "r", weight: 28 },
+    { key: "sr", weight: 26 },
 
-    { key: "ssr", weight: 13 },
+    { key: "ssr", weight: 10 },
 
     // black = choice sr = special ssr (동급)
     { key: "black", weight: 2 },
