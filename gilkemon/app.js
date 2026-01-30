@@ -227,14 +227,14 @@ function pickByRarity(pool) {
   const r = pool.filter(it => it.grade === "r");
   const n = pool.filter(it => it.grade === "n");
 
-  // ✅ 네가 말한 “서열” 반영: n=r=sr < ssr < (black/choice/specialSSR) < special
+  //   반영: n=r=sr < ssr < (black/choice/specialSSR) < special
   // 아래 숫자는 “비율”이 아니라 “가중치”야. (원하는대로 조절 가능)
   const weights = [
-    { key: "n", weight: 28 },
-    { key: "r", weight: 28 },
-    { key: "sr", weight: 26 },
+    { key: "n", weight: 30 },
+    { key: "r", weight: 25 },
+    { key: "sr", weight: 20 },
 
-    { key: "ssr", weight: 10 },
+    { key: "ssr", weight: 15 },
 
     // black = choice sr = special ssr (동급)
     { key: "black", weight: 2 },
