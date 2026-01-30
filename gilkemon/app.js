@@ -702,7 +702,7 @@ function showInfoCard(item, opts = {}) {
 
   const id = item.id || item.name; //  데이터에 맞게
 
-  const isNew = (typeof opts.isNew === "boolean") ? opts.isNew : isNewUnlock(id);
+  const isNew = (typeof opts.isNew === "boolean") ? opts.isNew : false;
    state.currentIsNew = isNew;
 
   infoCard.classList.remove("new-hit");
@@ -743,6 +743,10 @@ if (isNew){
   screenEl.classList.add("flash");
   infoCard.classList.add("new-hit");
   newBadge.classList.remove("hidden");
+  void newBadge.offsetWidth; // ✅ 리플로우로 애니메이션 확실히 재트리거
+  newBadge.style.animation = "none";
+  void newBadge.offsetWidth;
+  newBadge.style.animation = "";
 
   // 플래시 클래스 정리
   setTimeout(() => screenEl.classList.remove("flash"), 260);

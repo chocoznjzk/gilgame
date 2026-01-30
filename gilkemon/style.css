@@ -1320,6 +1320,7 @@ body{
   opacity: 0;
 }
 #newBadge:not(.hidden){
+  opacity: 1; /* ✅ 애니메이션이 안 떠도 무조건 보이게 */
   animation: newBadgePop 520ms cubic-bezier(.2,.9,.2,1) both; /*신규카드 이펙트*/
 }
 @keyframes newBadgePop{
