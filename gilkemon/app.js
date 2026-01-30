@@ -690,7 +690,7 @@ if (isNew){
   charLineEl.style.whiteSpace = "pre-line";
 
   // ✅ 신규일 때만 타이핑
-  if (state.currentIsNew) {
+  if (isNew) {
   typeText(charLineEl, displayLine, 80); // 속도 숫자 낮을수록 빨라짐
   }  else {
   charLineEl.textContent = displayLine;
@@ -816,9 +816,9 @@ async function handleBallClick() {
     ballBtn.classList.remove("is-idle");   //  클릭하면 둥둥 멈춤
 
  //테스트
-  const item = pickRandom(getPool());
-   //const pool = getPool();
-   //const item = pool.find(x => x.id === "SPECIAL-08") ?? pickRandom(pool);
+  //const item = pickRandom(getPool());
+   const pool = getPool();
+   const item = pool.find(x => x.id === "N-01") ?? pickRandom(pool);
 
     state.current = item;
 
@@ -898,7 +898,7 @@ async function handleAnyTap(e) {
     if (isRefuseSR(item)) {
       state.isLocked = true;
       hideInfoCard();
-      showToast(`${item.name}가 떠났습니다.`);
+      showToast(`${item.name}가 함께 하길 거부하며 떠났습니다.`);
       await sleep(2000);
       hideToast();
       setIdle(true);
@@ -934,7 +934,7 @@ async function handleAnyTap(e) {
       hideInfoCard();
       showEventMedia(item);
      // showEventMedia(item.eventMp4 || "./assets/events/black-event.png");
-      showToast("감당 가능하시겠어요?");
+      showToast("저랑 함께 하려면 이 정도 각오는 하셨어야죠.");
       state.isLocked = false;
       return;
     }

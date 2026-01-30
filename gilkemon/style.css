@@ -112,14 +112,15 @@ body{
 
 
 
-/* 하단 20% 영역(도감 버튼 + 히스토리) */
+/* 하단 15% 영역(도감 버튼 + 히스토리) */
 .bottom{
-  flex: 0 0 calc(var(--vh, 1vh) * 20);
-  min-height: 140px;
-  max-height: calc(var(--vh, 1vh) * 22);
+  flex: 0 0 calc(var(--vh, 1vh) * 15);
+  min-height: 120px;
+  max-height: calc(var(--vh, 1vh) * 18);
   display:flex;
-  flex-direction:column;
+  flex-direction:row;
   gap:10px;
+   align-items: stretch; 
 }
 
 .headline{
@@ -179,11 +180,11 @@ body{
 /* ===== 캐릭터 정보 카드 ===== */
 .info-card{
   width: min(320px, 100%);
-  margin-top: 6px;
+  margin-top: 10px;
   background: transparent;
   border: 1px solid rgba(255,255,255,.08);
   border-radius: 20px;
-  padding: 14px 14px 16px;
+  padding: 16px 14px 16px;
   box-shadow: 0 12px 34px rgba(0,0,0,.28);
   display:flex;
   flex-direction:column;
@@ -310,7 +311,7 @@ body{
 
 /* 히스토리 */
 .history{
-  background-color: rgb(255, 255, 255);
+  background-color: rgba(149, 151, 156, 0.9);
   border:1px solid var(--line);
   width: 100%;
   height: auto;
@@ -447,14 +448,21 @@ body{
 
 /*도감 버튼*/
 .dex-btn{
-  width: min(220px, 70%);
-  margin: 0 auto;           /* bottom 영역 안에서 가운데 */
-  display: block; 
-  padding:12px 12px;
+  flex: 0 0 34%;      /* ✅ 전체도감은 작게 */
+  width:auto;
+  margin: 0;           /* bottom 영역 안에서 가운데 */
+  height: 100%; 
+  display: flex; 
+  align-items: center;
+  justify-content: center;
+  padding:10px 10px;
   border-radius:14px;
-  border:1px solid rgba(0,0,0,.1);
+  border:3px solid rgba(0,0,0,.1);
   background:rgba(149, 151, 156, 0.9);
   font-weight:800;
+  font-style: black;
+   font-size: 14px;
+
 }
 
 /* 도감 오버레이 */
@@ -1127,17 +1135,20 @@ body{
 
 .bottom{
   flex: 0 0 15%;
-  min-height: 0;
+ 
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  
+ 
 }
 
 /* 히스토리는 내부 스크롤 */
 .history{
-  flex: 1 1 auto;
+  flex: 1 1 66%;
   min-height: 0;
-  overflow: auto;
+  height: 100%;
+   overflow: hidden;
+   display: flex;
+  flex-direction: column;
 }
 /* =========================
    볼 버튼 + 힌트 위치 아래로 이동
@@ -1390,7 +1401,7 @@ body{
   position: fixed !important;   /* 핵심 */
   left: 50% !important;
   /*  top: 40% !important;*/
-  top: 56% !important;
+  top: 54% !important; /*카드 위치 조절*/
   transform: translate(-50%, -50%) !important;
   z-index: 100000 !important;
 
