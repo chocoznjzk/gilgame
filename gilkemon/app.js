@@ -702,7 +702,7 @@ function showInfoCard(item, opts = {}) {
 
   const id = item.id || item.name; //  데이터에 맞게
 
-  const isNew = (typeof opts.isNew === "boolean") ? opts.isNew : false;
+  const isNew = (typeof opts.isNew === "boolean") ? opts.isNew : isNewUnlock(id);
    state.currentIsNew = isNew;
 
   infoCard.classList.remove("new-hit");
