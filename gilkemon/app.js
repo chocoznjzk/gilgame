@@ -148,7 +148,8 @@ function loadDex() {
     const arr = JSON.parse(raw);
     if (!Array.isArray(arr)) return new Set();
     return new Set(arr);
-  } catch {
+  } catch (e) {
+    console.warn("loadDex failed:", e);
     return new Set();
   }
 }
@@ -156,7 +157,9 @@ function loadDex() {
 function saveDex() {
   try {
     localStorage.setItem(DEX_KEY, JSON.stringify([...state.dex]));
-  } catch {}
+  } catch(e) {
+    console.warn("saveDex failed:", e);
+  }
 }
 
 // ===== Pool =====
