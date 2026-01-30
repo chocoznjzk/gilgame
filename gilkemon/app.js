@@ -214,7 +214,7 @@ function pickPreferUncollected(list, boost = 4) {
 
 function pickByRarity(pool) {
   // 카테고리 분리
-  const special = pool.filter(it => it.grade === "special" && it.special === "SPECIAL_TYPING");
+  const special = pool.filter(it => it.grade === "special");
   const specialSSR = pool.filter(it => it.grade === "ssr" && it.special === "SPECIAL_SSR");
   const choiceSR = pool.filter(it => it.grade === "sr" && it.special === "CHOICE_SR");
   const black = pool.filter(it => it.grade === "?" && it.special === "BLACK");
