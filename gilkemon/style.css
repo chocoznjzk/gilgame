@@ -460,7 +460,9 @@ body{
   border:3px solid rgba(0,0,0,.1);
   background:rgba(149, 151, 156, 0.9);
   font-weight:800;
-  font-style: black;
+  color: #000;                  /* ✅ 글씨 색 명시 */
+  -webkit-text-fill-color:#000; /* ✅ iOS에서 안전하게 */
+  font-style: normal;             /* ✅ 잘못된 font-style black 제거/수정 */
    font-size: 14px;
 
 }

@@ -566,6 +566,11 @@ function showDex() {
 }
 
 function hideDex() {
+  // 닫기 버튼 포커스 제거
+  document.getElementById("dexClose")?.blur();
+
+  // 도감을 열었던 버튼으로 포커스 돌리기(가능하면)
+  document.getElementById("dexBtn")?.focus();
   dexOverlay.classList.add("hidden");
   dexOverlay.setAttribute("aria-hidden", "true");
 
@@ -816,9 +821,9 @@ async function handleBallClick() {
     ballBtn.classList.remove("is-idle");   //  클릭하면 둥둥 멈춤
 
  //테스트
-  //const item = pickRandom(getPool());
-   const pool = getPool();
-   const item = pool.find(x => x.id === "N-01") ?? pickRandom(pool);
+  const item = pickRandom(getPool());
+   //const pool = getPool();
+   //const item = pool.find(x => x.id === "N-01") ?? pickRandom(pool);
 
     state.current = item;
 
