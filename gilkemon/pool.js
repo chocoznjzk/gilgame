@@ -445,6 +445,7 @@ window.GILKEMON_POOL = [
   eline : "대테러 1팀에서 사람\n 제일 많이 죽인건 너야.\n 열한명 애들 빼고도\n 1등인게 김해일이 너라고.\n\n 몇십명은 눈도 깜빡 안하고 \n죽이면서 애들 열한명 죽였다고\n 눈물콧물 짜고 있는게 \n나는 왜이리 가식으로 보이니?",
   desc: "김해일을 트라우마에 빠지게 한 장본인.",
   ballImg: "./assets/balls/special.png",
+  cardGif: "./assets/chars/이중권.jpg",
   charImg: "./assets/chars/이중권.png",
 
   special: "SPECIAL_TYPING", // 이 한 장에만!
@@ -457,6 +458,7 @@ window.GILKEMON_POOL = [
     line: "“이런! 쪽수가 안 맞잖아.”",
     desc: "김해일과의 시작은 안 좋았지만,\n 이젠 그의 편에서 움직인다.",
     ballImg: "./assets/balls/special.png",
+    cardMp4: "./assets/chars/황철범.mp4",
     charImg: "./assets/chars/황철범.png",
   },
        {
@@ -467,6 +469,7 @@ window.GILKEMON_POOL = [
     line: "“하영아.. 다 좋은데\n 너 자신보다 중요한건 없어.”",
     desc: "송하영 본인보다 더 그를 걱정한다.\n 늘 그와 함께 있다.",
     ballImg: "./assets/balls/special.png",
+    cardMp4: "./assets/chars/국영수.mp4",
     charImg: "./assets/chars/국영수.png",
   },
          {
@@ -477,6 +480,7 @@ window.GILKEMON_POOL = [
     line: "“경위님, 제가 도울 거\n 있으면 말해주세요!”",
     desc: "국영수와 마찬가지로 송하영을 걱정한다.\n 늘 그의 한 발자국 뒤에 있다.",
     ballImg: "./assets/balls/special.png",
+    cardMp4: "./assets/chars/정우주.mp4",
     charImg: "./assets/chars/정우주.png",
   },
        {
@@ -484,9 +488,10 @@ window.GILKEMON_POOL = [
     grade: "special",
     name: "문백",
     type: "트리거",
-    line: "“이도오... 어디 간거야?”",
-    desc: "이도와 함께 있으면 공격력이\n 떨어지지만 항상 그의 곁에 있다.",
+    line: "“이도... 역겹네.”",
+    desc: "언젠가부터 항상 이도 곁에 있다.",
     ballImg: "./assets/balls/special.png",
+    cardMp4: "./assets/chars/문백.mp4",
     charImg: "./assets/chars/문백.png",
   },
        {

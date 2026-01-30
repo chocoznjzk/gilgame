@@ -895,7 +895,7 @@ async function handleBallClick() {
   state.current = item;
 
    //const pool = getPool();
-   //const item = pool.find(x => x.id === "N-01") ?? pickRandom(pool);
+   //const item = pool.find(x => x.id === "SPECIAL-01") ?? pickRandom(pool);
 
     state.current = item;
 
