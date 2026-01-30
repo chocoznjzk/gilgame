@@ -657,7 +657,7 @@ function hideDex() {
 
   // 도감 열기 전에 카드가 떠있었으면 다시 보여주기
   if (back.infoVisible && back.current) {
-    showInfoCard(back.current);  // ✅ 너 코드에 있는 “카드 보여주는 함수” 이름 그대로 써야 함
+    showInfoCard(back.current, { isNew: false }); // 코드에 있는 “카드 보여주는 함수” 이름 그대로 써야 함
   }
 }
 
@@ -698,7 +698,9 @@ function showInfoCard(item, opts = {}) {
   const newBadge = document.querySelector("#newBadge");
 
   const id = item.id || item.name; //  데이터에 맞게
-  const isNew = isNewUnlock(id);
+
+  const isNew = (typeof opts.isNew === "boolean") ? opts.isNew : false;
+   state.currentIsNew = isNew;
 
   infoCard.classList.remove("new-hit");
   screenEl.classList.remove("flash");
@@ -897,11 +899,8 @@ async function handleBallClick() {
 
  //테스트
  const pool = getPool();
-  const item = pickByRarity(pool);
+  const item = pickByRarity(getPool());
   state.current = item;
-
-   //const pool = getPool();
-   //const item = pool.find(x => x.id === "SPECIAL-01") ?? pickRandom(pool);
 
     state.current = item;
 
