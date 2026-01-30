@@ -1403,7 +1403,7 @@ body{
   position: fixed !important;   /* 핵심 */
   left: 50% !important;
   /*  top: 40% !important;*/
-  top: 52% !important; /*카드 위치 조절*/
+  top: 50% !important; /*카드 위치 조절*/
   transform: translate(-50%, -50%) !important;
   z-index: 100000 !important;
 
