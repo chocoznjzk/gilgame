@@ -703,9 +703,9 @@ function showInfoCard(item, opts = {}) {
   infoCard.classList.remove("new-hit");
   screenEl.classList.remove("flash");
   newBadge.classList.add("hidden");
-  // ✅ 카드에서는 GIF(있으면) 우선, 없으면 기존 캐릭터 이미지
+  //  카드에서는 GIF(있으면) 우선, 없으면 기존 캐릭터 이미지
   const gifOrPng = item.cardGif || item.charImg || "";
-  const mp4 = item.cardMp4 || item.mp4 || "";   // 네가 쓸 필드명
+  const mp4 = item.cardMp4 || item.mp4 || "";   //  쓸 필드명
    if (mp4 && charVideoEl) {
     // video ON, img OFF
     charImgEl.classList.add("hidden");
@@ -714,7 +714,7 @@ function showInfoCard(item, opts = {}) {
     // 소스 교체
     if (charVideoEl.src !== mp4) charVideoEl.src = mp4;
 
-    // ✅ 무한 or 2번
+    // 무한 or 2번
     // 무한: playVideoNTimes(charVideoEl, Infinity)
     // 2번: playVideoNTimes(charVideoEl, 2)
     playVideoNTimes(charVideoEl, Infinity); // <- 여기만 바꾸면 됨
@@ -770,6 +770,8 @@ if (isNew){
   charLineEl.textContent = displayLine;
   }
 
+
+
   
   // 텍스트 박스 "뒤 배경색" (캐릭터별)
   cardBody.style.setProperty("--tb-bg", item.textBoxBg || "rgba(255, 255, 255, 0.65)");
@@ -786,6 +788,8 @@ if (isNew){
 }
 
 function hideInfoCard() {
+   stopTypewriter(charLineEl);   //  추가
+  __typingToken++;              //  typeText(비동기)도 즉시 중단
   infoCard.classList.add("hidden");
   infoCard.setAttribute("aria-hidden", "true");
   screenEl.classList.remove("is-dim");
@@ -856,6 +860,8 @@ function hideToast() {
 
 // ===== IDLE =====
 function setIdle(changeBg = false) {
+   stopTypewriter(charLineEl);   //  추가
+  __typingToken++;              //  추가
   if (changeBg) setRandomScreenBg();
 
   state.mode = "IDLE";
@@ -981,11 +987,19 @@ async function handleAnyTap(e) {
       setIdle(true);
       return;
     }
-
+   
     // 2) 특수 SSR: 다음 터치 -> (이미지+이름+대사) 타이핑 연출 화면으로 한 번 더
     if (isSpecialSSR(item) || isSpecialTyping(item)) {
       state.isLocked = true;
       state.mode = "SPECIAL_AFTER";
+      // ✅ 이미 획득(신규 아님)이면: 그냥 일반 카드처럼 닫기
+    if (!state.currentIsNew) {
+    setIdle(true);
+    return;
+    }
+      // ✅ 신규일 때만: SPECIAL_AFTER 연출
+    state.isLocked = true;
+    state.mode = "SPECIAL_AFTER";
 
       // 카드 구성은 "이미지+이름+대사" 느낌으로: desc/type 숨기고 라인 타이핑
       charTypeEl.textContent = "";
@@ -995,7 +1009,9 @@ async function handleAnyTap(e) {
       // 타이핑
       const raw = item.eline || "";
       const line = raw.startsWith("“") || raw.startsWith("\"") ? raw : `“${raw}”`;
-      typewriter(charLineEl, line, 70); // 타이핑 속도 조절
+       stopTypewriter(charLineEl);     // ✅ 추가(안전)
+       __typingToken++;                // ✅ 추가(안전)
+        typewriter(charLineEl, line, 70); // 타이핑 속도 조절
 
       showToast("한 번 더 터치하면 돌아가요");
       state.isLocked = false;
@@ -1085,6 +1101,12 @@ function typewriter(el, text, speed = 150) {
       el._twTimer = null;
     }
   }, speed);
+}
+function stopTypewriter(el){
+  if (el && el._twTimer) {
+    clearInterval(el._twTimer);
+    el._twTimer = null;
+  }
 }
 
 // ===== Init =====

@@ -195,7 +195,7 @@ body{
 /* 텍스트 영역만 배경/그림자 */
 .card-body{
   width: min(320px, 100%);
-  background: rgba(255,255,255,.90); /* JS에서 캐릭터별로 덮어씀 */
+  background: rgba(255, 255, 255, 0.948); /* JS에서 캐릭터별로 덮어씀 */
   border: 1px solid rgba(255,255,255,.08);
   border-radius: 20px;
   padding: 14px 14px 16px;
@@ -1313,7 +1313,7 @@ body{
   border-radius: 999px;
   font-weight: 900;
   letter-spacing: .5px;
-  background: rgba(246, 201, 76, 0.837);
+  background: rgba(255, 207, 76, 0.747);
   color: #111;
   z-index: 50;
   transform: scale(.9);
