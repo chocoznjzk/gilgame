@@ -239,7 +239,7 @@ function pickByRarity(pool) {
 
     // black = choice sr = special ssr (동급)
     { key: "black", weight: 2 },
-    { key: "choiceSR", weight: 1 },
+    { key: "choiceSR", weight: 2 },
     
     { key: "specialSSR", weight: 2 },
 
