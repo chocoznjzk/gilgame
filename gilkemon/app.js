@@ -221,10 +221,10 @@ function pickByRarity(pool) {
   const specialSSR = pool.filter(it => it.grade === "ssr" && it.special === "SPECIAL_SSR");
   const choiceSR = pool.filter(it => it.grade === "sr" && it.special === "CHOICE_SR");
   const black = pool.filter(it => it.grade === "?" && it.special === "BLACK");
-  const refuseSR = pool.filter(it => it.grade === "sr" && it.special === "REFUSE");
+  
 
   const ssr = pool.filter(it => it.grade === "ssr" && it.special !== "SPECIAL_SSR");
-  const sr = pool.filter(it => it.grade === "sr" && it.special !== "CHOICE_SR" && it.special !== "REFUSE");
+  const sr = pool.filter(it => it.grade === "sr" && it.special !== "CHOICE_SR");
   const r = pool.filter(it => it.grade === "r");
   const n = pool.filter(it => it.grade === "n");
 
@@ -240,7 +240,7 @@ function pickByRarity(pool) {
     // black = choice sr = special ssr (동급)
     { key: "black", weight: 2 },
     { key: "choiceSR", weight: 1 },
-    { key: "refuseSR", weight: 1 },
+    
     { key: "specialSSR", weight: 2 },
 
     // special이 가장 높음(=가장 희귀) -> 확률 가장 낮게
@@ -253,7 +253,7 @@ function pickByRarity(pool) {
     pick === "special" ? special :
     pick === "specialSSR" ? specialSSR :
     pick === "choiceSR" ? choiceSR :
-    pick === "refuseSR" ? refuseSR:
+    
     pick === "black" ? black :
     pick === "ssr" ? ssr :
     pick === "sr" ? sr :
